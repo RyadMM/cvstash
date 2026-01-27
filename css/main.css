@@ -1,13 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 * {
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: #ffffff;
     margin: 0;
     padding: 0;
     min-height: 100vh;
+}
+
+:root {
+    --accent-color: #f97316;
 }
 
 /* Editor styling */
@@ -23,8 +33,57 @@ body {
     background: #fafafa;
     color: #18181b;
     padding: 24px;
-    caret-color: #f97316;
+    caret-color: var(--accent-color, #f97316);
     min-height: 0;
+}
+
+/* ChatGPT-style copy button in editor corner */
+.editor-copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    height: 36px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.15s ease;
+    z-index: 10;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.editor-copy-btn:hover {
+    background: #f9fafb;
+    color: var(--accent-color, #f97316);
+    border-color: var(--accent-color, #f97316);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.editor-copy-btn.copied {
+    background: #10b981;
+    border-color: #10b981;
+    color: white;
+    opacity: 1;
+}
+
+/* Show on editor hover */
+.flex-1.overflow-hidden:hover .editor-copy-btn {
+    opacity: 1;
+}
+
+.editor-copy-btn svg {
+    width: 14px;
+    height: 14px;
 }
 
 #editor:focus {
@@ -85,7 +144,7 @@ body {
 
 .spinner {
     border: 3px solid #e5e7eb;
-    border-top: 3px solid #f97316;
+    border-top: 3px solid var(--accent-color, #f97316);
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -109,8 +168,9 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
-    transition: all 0.15s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
+    will-change: transform, background-color;
 }
 
 .btn-action:hover {
@@ -125,8 +185,8 @@ body {
 }
 
 .btn-primary {
-    background: #f97316;
-    border-color: #f97316;
+    background: var(--accent-color, #f97316);
+    border-color: var(--accent-color, #f97316);
     color: white;
 }
 
@@ -144,6 +204,12 @@ body {
 .btn-danger:hover {
     background: #fee2e2;
     border-color: #fca5a5;
+}
+
+.btn-success {
+    background: #10b981;
+    border-color: #10b981;
+    color: white;
 }
 
 /* Language switcher */
@@ -168,7 +234,7 @@ body {
 
 .lang-option.active {
     background: white;
-    color: #f97316;
+    color: var(--accent-color, #f97316);
     font-weight: 600;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
@@ -176,6 +242,51 @@ body {
 .lang-option:not(.active):hover {
     background: #f3f4f6;
     color: #374151;
+}
+
+/* Theme Picker */
+.theme-picker {
+    display: flex;
+    align-items: center;
+}
+
+.theme-color-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f4f6;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+    padding: 0;
+}
+
+.theme-color-btn:hover {
+    background: #e5e7eb;
+}
+
+.theme-icon {
+    width: 18px;
+    height: 18px;
+    color: #6b7280;
+    transition: color 0.15s ease;
+}
+
+.theme-color-btn:hover .theme-icon {
+    color: var(--accent-color, #f97316);
+}
+
+.theme-color-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
 }
 
 /* Panel headers */
@@ -212,6 +323,58 @@ body {
     height: 60px;
     display: flex;
     align-items: center;
+}
+
+/* Brand text styling */
+.brand-text {
+    display: flex;
+    align-items: center;
+}
+
+.brand-name {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #18181b;
+    letter-spacing: -0.03em;
+    position: relative;
+}
+
+.brand-name::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-color, #f97316) 0%, transparent 100%);
+    border-radius: 1px;
+    opacity: 0.6;
+}
+
+.header-tagline {
+    font-size: 13px;
+    font-weight: 500;
+    color: #52525b;
+    letter-spacing: -0.01em;
+}
+
+.header-privacy {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-color, #f97316);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .header-tagline {
+        display: none;
+    }
+
+    .header-privacy {
+        display: none;
+    }
 }
 
 .header-content {
@@ -382,14 +545,25 @@ body {
     transform: rotate(180deg);
 }
 
+.sidebar.collapsed .sidebar-header-actions #selection-mode-btn {
+    display: none;
+}
+
 .sidebar-header {
-    padding: 16px;
+    padding: 12px 16px;
     border-bottom: 1px solid #e5e7eb;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
     height: 56px;
     flex-shrink: 0;
+}
+
+.sidebar-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .sidebar-title {
@@ -457,23 +631,23 @@ body {
 }
 
 .cv-item.active {
-    background: #fff7ed;
-    border-color: #f97316;
-    box-shadow: 0 1px 3px rgba(249, 115, 22, 0.1);
+    background: color-mix(in srgb, var(--accent-color, #f97316) 15%, white);
+    border-color: var(--accent-color, #f97316);
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--accent-color, #f97316) 20%, transparent);
 }
 
 .cv-item.active .cv-name {
-    color: #f97316;
+    color: var(--accent-color, #f97316);
     font-weight: 600;
 }
 
 .cv-item.active .cv-last-modified {
-    color: #f97316;
+    color: var(--accent-color, #f97316);
 }
 
 .cv-item.active .cv-checkbox {
-    border-color: #f97316;
-    background: #fff7ed;
+    border-color: var(--accent-color, #f97316);
+    background: color-mix(in srgb, var(--accent-color, #f97316) 15%, white);
 }
 
 .cv-item-content {
@@ -682,7 +856,7 @@ body {
 }
 
 .rename-modal-input:focus {
-    border-color: #f97316;
+    border-color: var(--accent-color, #f97316);
 }
 
 .rename-modal-actions {
@@ -743,7 +917,7 @@ body {
 }
 
 .zoom-level.changed {
-    color: #f97316;
+    color: var(--accent-color, #f97316);
 }
 
 .btn-action.disabled {
@@ -757,9 +931,9 @@ body {
     border-color: #fdba74;
 }
 
-/* Checkbox styles - always visible */
+/* Checkbox styles - hidden by default */
 .cv-checkbox {
-    display: flex;
+    display: none;
     width: 20px;
     height: 20px;
     border: 2px solid #d1d5db;
@@ -778,8 +952,8 @@ body {
 }
 
 .cv-checkbox.checked {
-    background: #f97316;
-    border-color: #f97316;
+    background: var(--accent-color, #f97316);
+    border-color: var(--accent-color, #f97316);
     transform: scale(1.05);
 }
 
@@ -796,12 +970,12 @@ body {
 }
 
 .cv-item.selected {
-    background: #fff7ed;
-    border-color: #fdba74;
+    background: color-mix(in srgb, var(--accent-color, #f97316) 10%, white);
+    border-color: color-mix(in srgb, var(--accent-color, #f97316) 50%, #e5e7eb);
 }
 
 .cv-item.selected .cv-name {
-    color: #f97316;
+    color: var(--accent-color, #f97316);
     font-weight: 600;
 }
 
@@ -842,7 +1016,7 @@ body {
 .selection-counter {
     font-size: 15px;
     font-weight: 600;
-    color: #f97316;
+    color: var(--accent-color, #f97316);
     white-space: nowrap;
 }
 
@@ -922,7 +1096,7 @@ body {
 .selection-counter {
     font-size: 15px;
     font-weight: 600;
-    color: #f97316;
+    color: var(--accent-color, #f97316);
     white-space: nowrap;
 }
 
@@ -1006,7 +1180,7 @@ body {
 
 .progress-spinner {
     border: 4px solid #e5e7eb;
-    border-top: 4px solid #f97316;
+    border-top: 4px solid var(--accent-color, #f97316);
     border-radius: 50%;
     width: 60px;
     height: 60px;
@@ -1038,7 +1212,7 @@ body {
 
 .progress-bar {
     height: 100%;
-    background: #f97316;
+    background: var(--accent-color, #f97316);
     border-radius: 4px;
     transition: width 0.3s ease;
     width: 0%;
@@ -1126,6 +1300,80 @@ body {
     justify-content: flex-end;
 }
 
+/* Delete Confirmation Modal */
+.delete-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.delete-modal.show {
+    display: flex;
+}
+
+.delete-modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.delete-modal-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.delete-modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #18181b;
+    margin: 0;
+}
+
+.delete-modal-body {
+    padding: 20px 24px;
+}
+
+.delete-modal-message {
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+}
+
+.delete-modal-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #6b7280;
+    cursor: pointer;
+    user-select: none;
+}
+
+.delete-modal-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent-color, #f97316);
+}
+
+.delete-modal-actions {
+    display: flex;
+    gap: 8px;
+    padding: 16px 24px;
+    background: #f9fafb;
+    justify-content: flex-end;
+}
+
 /* Sidebar icon button */
 .sidebar-icon-btn {
     width: 36px;
@@ -1149,6 +1397,18 @@ body {
 .sidebar-icon-btn svg {
     width: 16px;
     height: 16px;
+}
+
+/* Show checkboxes only in selection mode */
+body.selection-mode .cv-checkbox {
+    display: flex;
+}
+
+/* Active state for selection mode button */
+#selection-mode-btn.active {
+    background: color-mix(in srgb, var(--accent-color, #f97316) 15%, white);
+    color: var(--accent-color, #f97316);
+    border-color: var(--accent-color, #f97316);
 }
 
 /* Main content wrapper */
@@ -1177,5 +1437,142 @@ body {
 @media screen and (min-width: 1200px) {
     .panel-header {
         padding: 14px 28px;
+    }
+}
+
+/* Lucide Icons */
+i[data-lucide] {
+    display: inline-block;
+    vertical-align: middle;
+    stroke: currentColor;
+}
+
+/* Ensure icons inherit button text color */
+.btn-action i[data-lucide],
+.sidebar-toggle i[data-lucide],
+.cv-action-btn i[data-lucide] {
+    stroke: currentColor;
+}
+
+/* Icon-specific adjustments */
+.empty-state-icon {
+    width: 72px !important;
+    height: 72px !important;
+}
+
+.sidebar-toggle-icon {
+    transition: transform 0.2s ease;
+}
+
+.sidebar.collapsed .sidebar-toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.toast {
+    pointer-events: auto;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 280px;
+    max-width: 400px;
+    animation: toastSlideIn 0.3s ease;
+}
+
+.toast.toast-exit {
+    animation: toastSlideOut 0.3s ease forwards;
+}
+
+.toast-message {
+    flex: 1;
+    font-size: 13px;
+    color: #3f3f46;
+}
+
+.toast-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.toast-undo-btn {
+    padding: 6px 12px;
+    background: var(--accent-color, #f97316);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.toast-undo-btn:hover {
+    opacity: 0.9;
+}
+
+.toast-dismiss-btn {
+    background: none;
+    border: none;
+    color: #a1a1aa;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toast-dismiss-btn:hover {
+    color: #71717a;
+}
+
+@keyframes toastSlideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toastSlideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .toast-container {
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .toast {
+        min-width: auto;
+        width: 100%;
     }
 }

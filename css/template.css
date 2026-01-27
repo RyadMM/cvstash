@@ -14,7 +14,8 @@
     --line-height-level: 1.3;
     --paragraph-spacing-level: 8pt;
     line-height: var(--line-height-level);
-    transition: all 0.2s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
 }
 
 /* Spacing Levels for Subtle Page-Fill Illusion */
@@ -36,7 +37,7 @@
 .cv-template h1 {
     font-size: 18pt;
     margin: 0 0 6pt 0;
-    color: #f97316;
+    color: var(--accent-color, #f97316);
     font-weight: bold;
 }
 
@@ -44,7 +45,7 @@
     font-size: 12pt;
     margin: 12pt 0 6pt 0;
     padding-bottom: 6pt;
-    border-bottom: 1px solid #f97316;
+    border-bottom: 1px solid var(--accent-color, #f97316);
     color: #18181b;
     font-weight: bold;
 }
@@ -78,7 +79,7 @@
     content: "•";
     position: absolute;
     left: 0;
-    color: #f97316;
+    color: var(--accent-color, #f97316);
     font-weight: bold;
 }
 
@@ -94,7 +95,7 @@
     content: counter(item) ".";
     position: absolute;
     left: 0;
-    color: #f97316;
+    color: var(--accent-color, #f97316);
     font-weight: bold;
 }
 
@@ -108,7 +109,7 @@
 }
 
 .cv-template a {
-    color: #f97316;
+    color: var(--accent-color, #f97316);
     text-decoration: none;
 }
 

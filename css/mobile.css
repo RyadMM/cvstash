@@ -393,3 +393,33 @@
         padding: 40px;
     }
 }
+
+/* Enhanced touch feedback */
+@media screen and (max-width: 768px) {
+    .btn-action,
+    .cv-item,
+    .cv-checkbox,
+    .cv-action-btn {
+        -webkit-tap-highlight-color: rgba(249, 115, 22, 0.2);
+        touch-action: manipulation;
+    }
+
+    .btn-action:active {
+        transform: scale(0.97);
+        transition: transform 0.1s ease;
+    }
+
+    .cv-item:active {
+        background: #f5f5f4;
+        transition: background 0.1s ease;
+    }
+
+    .preview-wrapper {
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #editor {
+        font-size: 16px;
+    }
+}
