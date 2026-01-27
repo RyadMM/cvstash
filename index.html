@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV Generator</title>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="dns-prefetch" href="https://unpkg.com">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/template.css">
     <link rel="stylesheet" href="css/mobile.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
     <!-- Loading overlay -->
@@ -60,21 +65,57 @@
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="delete-modal">
+        <div class="delete-modal-content">
+            <div class="delete-modal-header">
+                <h3 id="delete-modal-title" class="delete-modal-title">Delete CV?</h3>
+            </div>
+            <div class="delete-modal-body">
+                <p id="delete-modal-message" class="delete-modal-message">
+                    Are you sure you want to delete "{name}"? This action cannot be undone.
+                </p>
+                <label class="delete-modal-checkbox">
+                    <input type="checkbox" id="delete-dont-show">
+                    <span>Don't show this confirmation again</span>
+                </label>
+            </div>
+            <div class="delete-modal-actions">
+                <button id="delete-cancel" class="btn-action">Cancel</button>
+                <button id="delete-confirm" class="btn-action btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+
     <div class="flex flex-col h-screen">
         <!-- Header -->
         <header class="main-header">
             <div class="header-content">
-                <div class="flex items-center gap-4">
+                <div class="flex items-center justify-between flex-1">
                     <!-- Mobile Menu Button -->
                     <button id="mobile-menu-btn" class="md:hidden w-10 h-10 flex items-center justify-center border border-zinc-200 rounded-lg text-zinc-600 hover:bg-zinc-50">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        <i data-lucide="menu" class="w-5 h-5"></i>
                     </button>
-                    <div>
-                        <h1 id="app-title" class="header-title">CV Generator</h1>
-                        <p id="app-subtitle" class="header-subtitle">Create professional CVs</p>
+
+                    <!-- Left side: Logo + Tagline -->
+                    <div class="flex items-center gap-4">
+                        <div class="brand-text">
+                            <span class="brand-name" id="app-title">CVStash</span>
+                        </div>
+                        <div class="header-tagline" id="app-subtitle">Write in Markdown. Preview as PDF. Export anywhere</div>
                     </div>
+
+                    <!-- Right side: Privacy text -->
+                    <div class="header-privacy" id="header-privacy">private by design: 100% offline, 100% open-source</div>
                 </div>
                 <div class="flex items-center gap-6">
+                    <!-- Theme Picker -->
+                    <div class="theme-picker">
+                        <button id="accent-color-btn" class="theme-color-btn" title="Choose accent color">
+                            <i data-lucide="palette" class="theme-icon"></i>
+                            <input type="color" id="accent-color-input" class="theme-color-input" value="#f97316">
+                        </button>
+                    </div>
                     <!-- Language Switcher -->
                     <div class="lang-switcher">
                         <button id="lang-en" class="lang-option active" data-lang="en">EN</button>
@@ -90,20 +131,25 @@
             <div id="sidebar" class="sidebar">
                 <div class="sidebar-header">
                     <span id="sidebar-title" class="sidebar-title">My CVs</span>
-                    <button id="sidebar-toggle" class="sidebar-toggle">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sidebar-toggle-icon"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    </button>
+                    <div class="sidebar-header-actions">
+                        <button id="selection-mode-btn" class="sidebar-icon-btn" title="Multi-select">
+                            <i data-lucide="check-square"></i>
+                        </button>
+                        <button id="sidebar-toggle" class="sidebar-toggle">
+                            <i data-lucide="chevron-left" class="sidebar-toggle-icon"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="sidebar-content">
                     <div id="cv-list" class="cv-list"></div>
                     <button id="new-cv-btn" class="new-cv-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        <i data-lucide="plus"></i>
                         <span id="new-cv-btn-text">New CV</span>
                     </button>
                 </div>
                 <div class="sidebar-collapsed-content">
                     <button id="new-cv-btn-collapsed" class="sidebar-icon-btn" title="New CV">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        <i data-lucide="plus"></i>
                     </button>
                 </div>
             </div>
@@ -112,11 +158,11 @@
             <div class="main-content">
                 <!-- Empty State -->
                 <div id="empty-state" class="empty-state">
-                    <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    <i data-lucide="file-text" class="empty-state-icon"></i>
                     <div id="empty-state-title" class="empty-state-title">No CVs yet</div>
                     <div id="empty-state-description" class="empty-state-description">Create your first CV to get started</div>
                     <button id="empty-state-new-cv" class="btn-action btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        <i data-lucide="plus"></i>
                         <span id="empty-state-new-cv-text">Create First CV</span>
                     </button>
                 </div>
@@ -129,16 +175,20 @@
                             <span id="editor-label" class="panel-title">Editor</span>
                             <div class="actions-container">
                                 <button id="import-btn" class="btn-action">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M12 18v-8"></path><path d="m9 13 3 3 3-3"></path></svg>
+                                    <i data-lucide="file-down"></i>
                                     <span id="import-btn-text">Import</span>
                                 </button>
                                 <button id="export-btn" class="btn-action">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M12 22v-8"></path><path d="m9 17 3-3 3 3"></path></svg>
+                                    <i data-lucide="file-up"></i>
                                     <span id="export-btn-text">Export</span>
                                 </button>
                             </div>
                         </div>
-                        <div class="flex-1 overflow-hidden">
+                        <div class="flex-1 overflow-hidden relative">
+                            <button id="editor-copy-btn" class="editor-copy-btn" title="Copy to clipboard">
+                                <i data-lucide="copy"></i>
+                                <span id="editor-copy-btn-text">Copy</span>
+                            </button>
                             <textarea id="editor" placeholder="Start typing..."></textarea>
                         </div>
                     </div>
@@ -152,15 +202,15 @@
                             <div class="actions-container">
                                 <div class="zoom-controls">
                                     <button id="zoom-out-btn" class="btn-action btn-icon-only" title="Zoom out">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="8" y1="11" x2="3" y2="11"></line><line x1="3" y1="8" x2="3" y2="16"></line></svg>
+                                        <i data-lucide="zoom-out"></i>
                                     </button>
                                     <span id="zoom-level" class="zoom-level">100%</span>
                                     <button id="zoom-in-btn" class="btn-action btn-icon-only" title="Zoom in">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="14" y1="8" x2="14" y2="3"></line><line x1="14" y1="8" x2="17" y2="5"></line></svg>
+                                        <i data-lucide="zoom-in"></i>
                                     </button>
                                 </div>
                                 <button id="download-btn" class="btn-action btn-primary">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+                                    <i data-lucide="file-text"></i>
                                     <span id="download-btn-text">Download PDF</span>
                                 </button>
                             </div>
@@ -185,25 +235,28 @@
                 <!-- Bottom row: Select All + 3 action buttons -->
                 <div class="action-bar-actions">
                     <button id="select-all-btn" class="btn-action select-all-btn" title="Select All">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        <i data-lucide="grid"></i>
                         <span>Select All</span>
                     </button>
                     <button id="batch-download-md-btn" class="btn-action btn-icon-only" title="Download Markdown">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <i data-lucide="file-down"></i>
                         <span>MD</span>
                     </button>
                     <button id="batch-download-pdf-btn" class="btn-action btn-primary btn-icon-only" title="Download PDF">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <i data-lucide="download"></i>
                         <span>PDF</span>
                     </button>
                     <button id="batch-delete-btn" class="btn-action btn-danger btn-icon-only" title="Delete">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        <i data-lucide="trash-2"></i>
                         <span>Delete</span>
                     </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
 
     <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
