@@ -6,6 +6,8 @@ import { refreshIcons } from './icons.js';
 import { executeCommand, undo } from './history.js';
 import { DeleteCommand } from './commands.js';
 import { showToast } from './toast.js';
+import { applyCVColor, getGlobalAccentColor, setCVColor } from './theme.js';
+import { saveCVs } from './storage.js';
 
 let currentCVId = null;
 let cvs = {};
@@ -31,6 +33,14 @@ export function initSidebar(initialCVs) {
     cvs = initialCVs;
     currentCVId = getCurrentCVId();
     renderCVList();
+
+    // Listen for color picker changes and save to current CV
+    window.addEventListener('cvColorChange', (e) => {
+        if (currentCVId) {
+            setCVColor(currentCVId, e.detail.color, cvs);
+            saveCVs(cvs, currentCVId);
+        }
+    });
 }
 
 export function getCurrentCVId() {
@@ -95,6 +105,8 @@ export function selectCV(id) {
     if (!cvs[id]) return;
     currentCVId = id;
     renderCVList();
+    // Apply the CV's color to the theme
+    applyCVColor(cvs[id]);
     return cvs[id];
 }
 
@@ -112,6 +124,7 @@ export function createCV(name, content) {
     cvs[id] = {
         name: name,
         content: content,
+        color: getGlobalAccentColor(),  // Inherit current global color
         lastModified: Date.now()
     };
     currentCVId = id;
@@ -129,6 +142,7 @@ export function duplicateCV(id) {
     cvs[newId] = {
         name: newName,
         content: original.content,
+        color: original.color || getGlobalAccentColor(),  // Preserve original color
         lastModified: Date.now()
     };
 
@@ -181,6 +195,7 @@ function performDeleteWithUndo(id) {
             if (restoredCV) {
                 currentCVId = id;
                 renderCVList();
+                applyCVColor(restoredCV);
             }
         }
     );

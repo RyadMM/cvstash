@@ -191,8 +191,7 @@ body {
 }
 
 .btn-primary:hover {
-    background: #ea580c;
-    border-color: #ea580c;
+    filter: brightness(0.9);
 }
 
 .btn-danger {
@@ -272,12 +271,12 @@ body {
 .theme-icon {
     width: 18px;
     height: 18px;
-    color: #6b7280;
+    color: var(--accent-color, #f97316);
     transition: color 0.15s ease;
 }
 
 .theme-color-btn:hover .theme-icon {
-    color: var(--accent-color, #f97316);
+    opacity: 0.8;
 }
 
 .theme-color-input {
@@ -927,8 +926,18 @@ body {
 }
 
 .btn-primary.disabled {
-    background: #fdba74;
-    border-color: #fdba74;
+    filter: brightness(1.2);
+    opacity: 0.6;
+}
+
+/* Loading state for buttons - prevents freeze and adds visual feedback */
+.btn-action.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.btn-primary.loading {
+    filter: brightness(0.95);
 }
 
 /* Checkbox styles - hidden by default */

@@ -9,7 +9,7 @@ import { escapeHtml, showRenameModal, closeMobileMenu, toggleMobileMenu, toggleS
 import * as sidebar from './sidebar.js';
 import { toggleSelectionMode, toggleCVSelection, selectAll, batchDownloadMD, batchDownloadPDF, batchDelete, clearSelection, getSelectedCVs } from './selection.js';
 import { initSwipeGesture, destroySwipeGesture } from './swipe.js';
-import { initTheme, setTheme } from './theme.js';
+import { initTheme, setTheme, applyCVColor } from './theme.js';
 import { executeCommand, undo, redo } from './history.js';
 import { RenameCommand, EditCommand } from './commands.js';
 import { showToast } from './toast.js';
@@ -517,7 +517,7 @@ function getNextSampleCV() {
 }
 
 async function init() {
-    console.log('CV Generator init() starting...');
+    console.log('CV Stash init() starting...');
 
     const lang = storage.loadLanguage();
     setLang(lang);
@@ -538,13 +538,19 @@ async function init() {
 
     initTheme();
 
+    // Apply current CV's color to the theme
+    const currentCV = sidebar.getCurrentCV();
+    if (currentCV) {
+        applyCVColor(currentCV);
+    }
+
     if (window.lucide) {
         window.lucide.createIcons();
     }
 
     requestInitialZoom();
 
-    console.log('CV Generator initialized successfully');
+    console.log('CV Stash initialized successfully');
 }
 
 function setupEventListeners() {
@@ -616,6 +622,7 @@ function setupEventListeners() {
                 if (currentCV) {
                     loadContent(currentCV.content);
                     updatePreview(currentCV.content);
+                    applyCVColor(currentCV);
                 }
             }
         }
@@ -631,6 +638,7 @@ function setupEventListeners() {
                 if (currentCV) {
                     loadContent(currentCV.content);
                     updatePreview(currentCV.content);
+                    applyCVColor(currentCV);
                 }
             }
         }
@@ -646,6 +654,7 @@ function setupEventListeners() {
                 if (currentCV) {
                     loadContent(currentCV.content);
                     updatePreview(currentCV.content);
+                    applyCVColor(currentCV);
                 }
             }
         }
@@ -925,6 +934,10 @@ function handleRename(id) {
             () => {
                 undo();
                 sidebar.initSidebar(sidebar.getCVs());
+                const currentCV = sidebar.getCurrentCV();
+                if (currentCV) {
+                    applyCVColor(currentCV);
+                }
             }
         );
     }, () => {

@@ -7,6 +7,7 @@ import { executeCommand, undo } from './history.js';
 import { BatchDeleteCommand } from './commands.js';
 import { showToast } from './toast.js';
 import * as sidebar from './sidebar.js';
+import { applyCVColor } from './theme.js';
 
 let selectedCVs = new Set();
 let selectionMode = false;
@@ -162,6 +163,10 @@ export function batchDelete(cvs) {
         () => {
             undo();
             sidebar.renderCVList();
+            const currentCV = sidebar.getCurrentCV();
+            if (currentCV) {
+                applyCVColor(currentCV);
+            }
         }
     );
 

@@ -21,45 +21,55 @@ function createPDFElement(content) {
 export function downloadPDF(cv) {
     const filename = generatePDFFilename(cv.name);
     const loading = document.getElementById('loading');
-    loading.classList.add('show');
+    const btn = document.getElementById('download-btn');
 
-    const pdfElement = createPDFElement(cv.content);
-    document.body.appendChild(pdfElement);
+    // Use requestAnimationFrame to ensure UI updates immediately
+    requestAnimationFrame(() => {
+        loading.classList.add('show');
+        if (btn) btn.classList.add('loading');
 
-    const config = {
-        margin: 0,
-        filename: filename,
-        image: { type: 'jpeg', quality: 0.95 },
-        html2canvas: {
-            scale: 2,
-            useCORS: true,
-            logging: false,
-            letterRendering: true
-        },
-        jsPDF: {
-            unit: 'in',
-            format: 'letter',
-            orientation: 'portrait'
-        }
-    };
+        // Small timeout to ensure loading overlay is visible before heavy work
+        setTimeout(() => {
+            const pdfElement = createPDFElement(cv.content);
+            document.body.appendChild(pdfElement);
 
-    html2pdf()
-        .set(config)
-        .from(pdfElement)
-        .save()
-        .then(() => {
-            loading.classList.remove('show');
-        })
-        .catch(err => {
-            console.error('PDF generation error:', err);
-            loading.classList.remove('show');
-            alert(t('loading') + ' Error: ' + err.message);
-        })
-        .finally(() => {
-            if (document.body.contains(pdfElement)) {
-                document.body.removeChild(pdfElement);
-            }
-        });
+            const config = {
+                margin: 0,
+                filename: filename,
+                image: { type: 'jpeg', quality: 0.95 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    letterRendering: true
+                },
+                jsPDF: {
+                    unit: 'in',
+                    format: 'letter',
+                    orientation: 'portrait'
+                }
+            };
+
+            html2pdf()
+                .set(config)
+                .from(pdfElement)
+                .save()
+                .then(() => {
+                    loading.classList.remove('show');
+                })
+                .catch(err => {
+                    console.error('PDF generation error:', err);
+                    loading.classList.remove('show');
+                    alert(t('loading') + ' Error: ' + err.message);
+                })
+                .finally(() => {
+                    if (btn) btn.classList.remove('loading');
+                    if (document.body.contains(pdfElement)) {
+                        document.body.removeChild(pdfElement);
+                    }
+                });
+        }, 50);
+    });
 }
 
 export async function generatePDFForCV(cv) {
