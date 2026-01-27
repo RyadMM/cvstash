@@ -3,8 +3,27 @@
 import * as storage from './storage.js';
 import { t } from './i18n.js';
 import { showProgressOverlay, updateProgress, hideProgressOverlay } from './ui.js';
+import { executeCommand, undo } from './history.js';
+import { BatchDeleteCommand } from './commands.js';
+import { showToast } from './toast.js';
+import * as sidebar from './sidebar.js';
 
 let selectedCVs = new Set();
+let selectionMode = false;
+
+export function toggleSelectionMode() {
+    selectionMode = !selectionMode;
+    document.body.classList.toggle('selection-mode', selectionMode);
+
+    const btn = document.getElementById('selection-mode-btn');
+    if (btn) {
+        btn.classList.toggle('active', selectionMode);
+    }
+
+    if (!selectionMode) {
+        clearSelection();
+    }
+}
 
 export function getSelectedCVs() {
     return selectedCVs;
@@ -43,7 +62,7 @@ export function updateSelectionUI() {
     const selectAllBtn = document.getElementById('select-all-btn');
 
     if (counter) {
-        counter.textContent = `${count} ${count === 1 ? 'CV' : 'CVs'} selected`;
+        counter.textContent = count === 1 ? t('cvSelected') : t('cvsSelected', { count });
     }
 
     if (actionBar) {
@@ -56,7 +75,7 @@ export function updateSelectionUI() {
             .map(el => el.dataset.id)
             .filter(id => id);
         const allSelected = allIds.length > 0 && selectedCVs.size === allIds.length;
-        selectAllBtn.querySelector('span').textContent = allSelected ? 'Deselect All' : 'Select All';
+        selectAllBtn.querySelector('span').textContent = allSelected ? t('deselectAll') : t('selectAll');
     }
 
     updateCheckboxes();
@@ -132,16 +151,20 @@ export function batchDelete(cvs) {
         return false;
     }
 
-    selectedIds.forEach(id => {
-        delete cvs[id];
-    });
-
     const currentCVId = localStorage.getItem('currentCVId');
-    if (!cvs[currentCVId] && Object.keys(cvs).length > 0) {
-        localStorage.setItem('currentCVId', Object.keys(cvs)[0]);
-    } else if (Object.keys(cvs).length === 0) {
-        localStorage.removeItem('currentCVId');
-    }
+    const command = new BatchDeleteCommand(selectedIds, cvs, currentCVId);
+    command.execute();
+    executeCommand(command);
 
+    // Show toast with undo option
+    showToast(
+        command.getDescription(),
+        () => {
+            undo();
+            sidebar.renderCVList();
+        }
+    );
+
+    clearSelection();
     return true;
 }

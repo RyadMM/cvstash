@@ -120,6 +120,34 @@ export function hideBatchDeleteModal() {
     document.getElementById('batch-delete-modal').classList.remove('show');
 }
 
+let deleteCallback = null;
+
+export function showDeleteModal(cvName, onConfirm, onCancel) {
+    const modal = document.getElementById('delete-modal');
+    const message = document.getElementById('delete-modal-message');
+    const checkbox = document.getElementById('delete-dont-show');
+
+    message.textContent = `Are you sure you want to delete "${cvName}"? This action cannot be undone.`;
+    checkbox.checked = false;
+
+    modal.classList.add('show');
+    deleteCallback = { onConfirm, onCancel };
+}
+
+export function hideDeleteModal() {
+    const modal = document.getElementById('delete-modal');
+    modal.classList.remove('show');
+    deleteCallback = null;
+}
+
+export function getDeleteCallback() {
+    return deleteCallback;
+}
+
+export function shouldSkipDeleteConfirm() {
+    return localStorage.getItem('skipDeleteConfirm') === 'true';
+}
+
 export function toggleSidebar() {
     if (window.innerWidth <= 768) {
         toggleMobileMenu();

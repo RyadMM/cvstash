@@ -1,5 +1,7 @@
 // Internationalization (i18n) module
 
+import { refreshIcons } from './icons.js';
+
 let i18nData = {};
 let currentLang = 'en';
 
@@ -30,9 +32,12 @@ export function updateLanguageUI() {
 
     const appTitle = document.getElementById('app-title');
     if (appTitle) appTitle.textContent = t.title;
-    
+
     const appSubtitle = document.getElementById('app-subtitle');
     if (appSubtitle) appSubtitle.textContent = t.subtitle;
+
+    const headerPrivacy = document.getElementById('header-privacy');
+    if (headerPrivacy) headerPrivacy.textContent = t.privacy;
     
     const editorLabel = document.getElementById('editor-label');
     if (editorLabel) editorLabel.textContent = t.editor;
@@ -48,6 +53,12 @@ export function updateLanguageUI() {
     
     const exportBtnText = document.getElementById('export-btn-text');
     if (exportBtnText) exportBtnText.textContent = t.export;
+
+    const copyBtnText = document.getElementById('copy-btn-text');
+    if (copyBtnText) copyBtnText.textContent = t.copy;
+
+    const editorCopyBtnText = document.getElementById('editor-copy-btn-text');
+    if (editorCopyBtnText) editorCopyBtnText.textContent = t.copyEditor;
     
     const editor = document.getElementById('editor');
     if (editor) editor.placeholder = t.placeholder;
@@ -56,9 +67,10 @@ export function updateLanguageUI() {
     if (sidebarTitle) sidebarTitle.textContent = t.myCVs;
     
     document.getElementById('new-cv-btn').innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <i data-lucide="plus"></i>
         <span id="new-cv-btn-text">${t.newCV}</span>
     `;
+    refreshIcons();
     
     document.getElementById('rename-modal-title').textContent = t.renameCV;
     document.getElementById('rename-cancel').textContent = t.cancel;

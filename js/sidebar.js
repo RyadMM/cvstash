@@ -1,7 +1,11 @@
 // Sidebar, CV list, and navigation
 
-import { escapeHtml } from './ui.js';
+import { escapeHtml, showDeleteModal, shouldSkipDeleteConfirm, hideDeleteModal } from './ui.js';
 import { t, getLang } from './i18n.js';
+import { refreshIcons } from './icons.js';
+import { executeCommand, undo } from './history.js';
+import { DeleteCommand } from './commands.js';
+import { showToast } from './toast.js';
 
 let currentCVId = null;
 let cvs = {};
@@ -55,7 +59,7 @@ export function renderCVList() {
 
         const checkboxHtml = `
             <div class="cv-checkbox" data-id="${id}">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width: 12px; height: 12px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <i data-lucide="check" style="width: 12px; height: 12px;"></i>
             </div>
         `;
 
@@ -69,10 +73,13 @@ export function renderCVList() {
             </div>
             <div class="cv-actions">
                 <button class="cv-action-btn" title="${t('rename')}" data-action="rename" data-id="${id}">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                    <i data-lucide="edit-2" style="width: 14px; height: 14px;"></i>
+                </button>
+                <button class="cv-action-btn" title="${t('duplicate')}" data-action="duplicate" data-id="${id}">
+                    <i data-lucide="copy" style="width: 14px; height: 14px;"></i>
                 </button>
                 <button class="cv-action-btn delete" title="${t('delete')}" data-action="delete" data-id="${id}">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
                 </button>
             </div>
         `;
@@ -80,6 +87,8 @@ export function renderCVList() {
         item.innerHTML = contentHtml;
         container.appendChild(item);
     });
+
+    refreshIcons();
 }
 
 export function selectCV(id) {
@@ -110,6 +119,24 @@ export function createCV(name, content) {
     return cvs[id];
 }
 
+export function duplicateCV(id) {
+    if (!cvs[id]) return;
+
+    const original = cvs[id];
+    const newName = `${original.name} (copy)`;
+
+    const newId = 'cv-' + Date.now();
+    cvs[newId] = {
+        name: newName,
+        content: original.content,
+        lastModified: Date.now()
+    };
+
+    currentCVId = newId;
+    renderCVList();
+    return cvs[newId];
+}
+
 export function deleteCV(id) {
     if (!cvs[id]) return;
 
@@ -118,15 +145,46 @@ export function deleteCV(id) {
         return false;
     }
 
-    if (!confirm(t('deleteConfirm').replace('{name}', cvs[id].name))) return false;
-
-    delete cvs[id];
-
-    if (id === currentCVId) {
-        currentCVId = Object.keys(cvs).length > 0 ? Object.keys(cvs)[0] : null;
+    // Skip confirmation if user chose "don't show again"
+    if (shouldSkipDeleteConfirm()) {
+        return performDeleteWithUndo(id);
     }
 
+    // Show custom modal
+    showDeleteModal(cvs[id].name,
+        () => { // onConfirm
+            performDeleteWithUndo(id);
+            hideDeleteModal();
+        },
+        () => { // onCancel
+            hideDeleteModal();
+        }
+    );
+
+    return false; // Defer actual deletion until confirmed
+}
+
+function performDeleteWithUndo(id) {
+    const command = new DeleteCommand(id, cvs, currentCVId);
+    command.execute();
+    executeCommand(command);
     renderCVList();
+
+    // Show toast with undo option
+    showToast(
+        command.getDescription(),
+        () => {
+            undo();
+            renderCVList();
+            // Reload current CV if it was restored
+            const restoredCV = cvs[id];
+            if (restoredCV) {
+                currentCVId = id;
+                renderCVList();
+            }
+        }
+    );
+
     return true;
 }
 
