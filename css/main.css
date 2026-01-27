@@ -187,6 +187,8 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+    height: 56px;
+    flex-shrink: 0;
 }
 
 .panel-title {
@@ -386,7 +388,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 56px;
+    height: 56px;
+    flex-shrink: 0;
 }
 
 .sidebar-title {
@@ -1168,4 +1171,11 @@ body {
 
 #editor-preview-wrapper > div:last-child {
     background: #fafafa;
+}
+
+/* Large screens - adjust panel header padding while maintaining consistent height */
+@media screen and (min-width: 1200px) {
+    .panel-header {
+        padding: 14px 28px;
+    }
 }
