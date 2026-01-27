@@ -37,6 +37,8 @@ function updateCharacterCounter(content) {
     const counter = document.getElementById('char-counter');
     const currentEl = document.getElementById('char-current');
 
+    if (!counter || !currentEl) return;
+
     currentEl.textContent = currentCount;
 
     if (currentCount > CHAR_LIMIT) {
