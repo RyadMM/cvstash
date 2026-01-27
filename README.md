@@ -200,7 +200,9 @@ git push
 
 ## License
 
-MIT License - see LICENSE file
+GNU Affero General Public License v3.0 (AGPL-3.0) - see LICENSE file
+
+This is a copyleft license that requires source code disclosure for network use.
 
 ## Support
 
