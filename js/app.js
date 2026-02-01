@@ -508,6 +508,60 @@ Enquêteur privé tenace avec un don pour trouver les choses perdues et les pers
     ]
 };
 
+// Use existing sample templates for new CV creation
+const templateCV = `# Jane "Caramel" Donut
+
+Sugarville, Glazed Kingdom
++1 555-BE-TTER · jane.donut@bakerydreams.com
+
+## Summary
+
+Passionate and detail-oriented pastry enthusiast. Experience in sweet case management, recipe documentation, and hungry customer service. Autonomy, organizational skills, quality glaze verification, and adherence to baking procedures.
+
+## Key Skills
+
+- Rigor in temperatures, attention to detail, and chocolate consistency
+- Autonomy, utensil organization, and respect for proofing times
+- Order management, flour deliveries, and sweet priorities
+- Recipe documentation and clear baking instructions
+- Customer service (email / phone / in person / with samples)
+- Comfort with digital tools (connected scale, recipe apps)
+
+## Experience
+
+### Cupcake Solutions Coordinator — Sweet Dreams Bakery (Sugarville)
+*March 2024 — Present*
+
+- Handles client requests via email and phone with courteous and delicious service.
+- Ensures order follow-up, performs follow-up calls, and documents necessary icing information.
+- Verifies frosting designs and validates compliance with client requirements (colors, flavors, edible typography, etc.) before final delivery.
+- Plans seasonal themes and coordinates relevant pastry teams in advance.
+- Processes approximately **10 to 15 orders per day** and prioritizes based on freshness urgency and deadlines.
+
+### Pastry Chef — The Enchanted Bakery
+*September 2016 — January 2020*
+
+- Prepares stations and instruments according to cleanliness protocols and established procedures.
+- Anticipates unexpected issues (rush periods, last-minute orders) and adapts quickly to ensure smooth production progression.
+- Performs verifications and follow-ups related to recipes (temperatures, baking times) with scientific rigor.
+- Schedules tasting appointments, documents relevant information, and performs post-delivery follow-ups.
+
+### Pastry Apprentice — The Magic Oven
+*March 2008 — September 2016*
+
+- Prepares ingredients for daily recipes and assists during mass productions.
+- Sterilizes and maintains instruments and equipment according to hygiene standards.
+
+## Education
+
+- Technical Training — Advanced French Pastry (Cordon Bleu School), 2019
+- D.E.P. Pastry, 2008
+
+## Languages
+
+- French (native) · English (intermediate) · Language of Croissants (fluent)
+`;
+
 function getNextSampleCV() {
     const lang = getLang();
     const samples = sampleCVs[lang];
@@ -535,6 +589,7 @@ async function init() {
 
     setupEventListeners();
     updateViewState();
+    initMobileTab();
 
     initTheme();
 
@@ -581,6 +636,14 @@ function setupEventListeners() {
 
     document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
     document.getElementById('mobile-overlay').addEventListener('click', closeMobileMenu);
+
+    // Mobile tab switching
+    document.getElementById('mobile-editor-tab').addEventListener('click', () => switchMobileTab('editor'));
+    document.getElementById('mobile-preview-tab').addEventListener('click', () => switchMobileTab('preview'));
+
+    // Mobile import/export buttons
+    document.getElementById('mobile-import-btn').addEventListener('click', handleImport);
+    document.getElementById('mobile-export-btn').addEventListener('click', handleExport);
 
     document.getElementById('empty-state-new-cv').addEventListener('click', handleCreateNewCV);
 
@@ -661,6 +724,50 @@ function setupEventListeners() {
     });
 
     setupCVListListeners();
+}
+
+// Mobile tab switching
+function switchMobileTab(tab) {
+    const editorTab = document.getElementById('mobile-editor-tab');
+    const previewTab = document.getElementById('mobile-preview-tab');
+    const editorPanel = document.getElementById('mobile-editor-panel');
+    const previewPanel = document.getElementById('mobile-preview-panel');
+    const editor = document.getElementById('editor');
+
+    if (tab === 'editor') {
+        // Set editor tab as active
+        editorTab.classList.add('active');
+        previewTab.classList.remove('active');
+
+        // Show editor panel, hide preview panel
+        editorPanel.classList.add('active');
+        previewPanel.classList.remove('active');
+
+        // Focus editor
+        editor.focus();
+    } else {
+        // Set preview tab as active
+        previewTab.classList.add('active');
+        editorTab.classList.remove('active');
+
+        // Show preview panel, hide editor panel
+        previewPanel.classList.add('active');
+        editorPanel.classList.remove('active');
+
+        // Update preview with current content
+        const currentContent = getContent();
+        if (currentContent) {
+            updatePreview(currentContent);
+        }
+    }
+}
+
+// Initialize mobile tab based on content
+function initMobileTab() {
+    const editor = document.getElementById('editor');
+    
+    // Always show editor tab on mobile (especially when creating new CV)
+    switchMobileTab('editor');
 }
 
 function requestInitialZoom() {
@@ -895,10 +1002,11 @@ function handleFileImport(event) {
 }
 
 function handleCreateNewCV() {
-    const defaultName = t('noCVs') === 'No CVs yet' ? 'New CV' : 'Nouveau CV';
-    const sampleContent = getNextSampleCV();
-    sidebar.createCV(defaultName, sampleContent);
+    const defaultName = t('newCV') || 'New CV';
+    const templateContent = templateCV;
+    sidebar.createCV(defaultName, templateContent);
     storage.saveCVs(sidebar.getCVs(), sidebar.getCurrentCVId());
+    loadCurrentCV();
     updateViewState();
     clearSelection();
     closeMobileMenu();

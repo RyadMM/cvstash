@@ -159,18 +159,44 @@
                 <!-- Empty State -->
                 <div id="empty-state" class="empty-state">
                     <i data-lucide="file-text" class="empty-state-icon"></i>
-                    <div id="empty-state-title" class="empty-state-title">No CVs yet</div>
-                    <div id="empty-state-description" class="empty-state-description">Create your first CV to get started</div>
+                    <div id="empty-state-title" class="empty-state-title">Start Creating Your CV</div>
+                    <div id="empty-state-description" class="empty-state-description">
+                        Use our professional template to build your resume. Customize it with your own information and start your job search.
+                    </div>
                     <button id="empty-state-new-cv" class="btn-action btn-primary">
                         <i data-lucide="plus"></i>
-                        <span id="empty-state-new-cv-text">Create First CV</span>
+                        <span id="empty-state-new-cv-text">Create CV with Template</span>
                     </button>
                 </div>
 
                 <!-- Editor & Preview Panels -->
-                <div id="editor-preview-wrapper" class="flex-1 flex flex-col md:flex-row overflow-hidden">
+                <div id="editor-preview-wrapper" class="flex-1 flex flex-col overflow-hidden">
+                    <!-- Mobile Tab Bar (visible on mobile only) -->
+                    <div class="mobile-tab-bar">
+                        <div class="tab-row-1">
+                            <button class="tab-btn active" data-tab="editor" id="mobile-editor-tab">
+                                <i data-lucide="edit-3"></i>
+                                <span>Edit</span>
+                            </button>
+                            <button class="tab-btn" data-tab="preview" id="mobile-preview-tab">
+                                <i data-lucide="file-text"></i>
+                                <span>Preview</span>
+                            </button>
+                        </div>
+                        <div class="tab-row-2">
+                            <button class="action-btn" id="mobile-import-btn" title="Import CV">
+                                <i data-lucide="file-down"></i>
+                                <span>Import</span>
+                            </button>
+                            <button class="action-btn" id="mobile-export-btn" title="Export CV">
+                                <i data-lucide="file-up"></i>
+                                <span>Export</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Editor Panel -->
-                    <div class="w-full md:w-1/2 border-r border-zinc-200 flex flex-col min-w-0">
+                    <div class="w-full flex flex-col min-w-0 mobile-panel active" id="mobile-editor-panel">
                         <div class="panel-header flex items-center justify-between">
                             <span id="editor-label" class="panel-title">Editor</span>
                             <div class="actions-container">
@@ -194,7 +220,7 @@
                     </div>
 
                     <!-- Preview Panel -->
-                    <div class="w-full md:w-1/2 flex flex-col min-w-0">
+                    <div class="w-full flex flex-col min-w-0 mobile-panel" id="mobile-preview-panel">
                         <div class="panel-header flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <span id="preview-label" class="panel-title">Preview</span>
@@ -218,6 +244,62 @@
                         <div class="flex-1 overflow-auto">
                             <div class="preview-wrapper">
                                 <div id="preview" class="cv-template"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Editor & Preview Panels -->
+                    <div id="desktop-panel-container" class="desktop-panel-container">
+                        <!-- Editor Panel -->
+                        <div class="w-full md:w-1/2 border-r border-zinc-200 flex flex-col min-w-0">
+                            <div class="panel-header flex items-center justify-between">
+                                <span id="editor-label" class="panel-title">Editor</span>
+                                <div class="actions-container">
+                                    <button id="import-btn" class="btn-action">
+                                        <i data-lucide="file-down"></i>
+                                        <span id="import-btn-text">Import</span>
+                                    </button>
+                                    <button id="export-btn" class="btn-action">
+                                        <i data-lucide="file-up"></i>
+                                        <span id="export-btn-text">Export</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-hidden relative">
+                                <button id="editor-copy-btn" class="editor-copy-btn" title="Copy to clipboard">
+                                    <i data-lucide="copy"></i>
+                                    <span id="editor-copy-btn-text">Copy</span>
+                                </button>
+                                <textarea id="editor" placeholder="Start typing..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Preview Panel -->
+                        <div class="w-full md:w-1/2 flex flex-col min-w-0">
+                            <div class="panel-header flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span id="preview-label" class="panel-title">Preview</span>
+                                </div>
+                                <div class="actions-container">
+                                    <div class="zoom-controls">
+                                        <button id="zoom-out-btn" class="btn-action btn-icon-only" title="Zoom out">
+                                            <i data-lucide="zoom-out"></i>
+                                        </button>
+                                        <span id="zoom-level" class="zoom-level">100%</span>
+                                        <button id="zoom-in-btn" class="btn-action btn-icon-only" title="Zoom in">
+                                            <i data-lucide="zoom-in"></i>
+                                        </button>
+                                    </div>
+                                    <button id="download-btn" class="btn-action btn-primary">
+                                        <i data-lucide="file-text"></i>
+                                        <span id="download-btn-text">Download PDF</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-auto">
+                                <div class="preview-wrapper">
+                                    <div id="preview" class="cv-template"></div>
+                                </div>
                             </div>
                         </div>
                     </div>

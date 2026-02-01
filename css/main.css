@@ -314,6 +314,13 @@ body {
     align-items: center;
 }
 
+/* Desktop panel container */
+.desktop-panel-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 /* Main header */
 .main-header {
     background: white;
