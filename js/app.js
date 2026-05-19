@@ -772,6 +772,11 @@ function switchTab(tab) {
         if (currentContent) {
             updatePreview(currentContent);
         }
+
+        // On mobile, apply letter-fit scaling after preview renders
+        if (window.innerWidth <= 768) {
+            requestAnimationFrame(() => applyFitToView());
+        }
     }
 }
 
@@ -921,6 +926,11 @@ function getCurrentZoomScale() {
     const preview = document.getElementById('preview');
     if (!preview) return 1.0;
 
+    // On mobile, zoom is handled via CSS zoom property
+    if (window.innerWidth <= 768) {
+        return parseFloat(preview.style.zoom) || 1.0;
+    }
+
     const transform = preview.style.transform;
     const match = transform.match(/scale\(([\d.]+)\)/);
     return match ? parseFloat(match[1]) : 1.0;
@@ -939,7 +949,12 @@ function setZoomScale(scale) {
     }
 
     scale = Math.floor(scale * 100) / 100;
-    preview.style.transform = `scale(${scale})`;
+
+    if (window.innerWidth <= 768) {
+        preview.style.zoom = scale;
+    } else {
+        preview.style.transform = `scale(${scale})`;
+    }
 }
 
 function applyFitToView() {
@@ -947,15 +962,32 @@ function applyFitToView() {
 
     if (!preview) return;
 
-    // Default to 100% (1.0) scale
-    preview.style.transform = 'scale(1)';
+    if (window.innerWidth <= 768) {
+        // On mobile, use CSS zoom to fit letter page to viewport width
+        const templateWidthPx = 816; // 8.5in at 96dpi
+        const scale = Math.floor((window.innerWidth / templateWidthPx) * 100) / 100;
+        preview.style.zoom = scale;
+        preview.style.transform = '';
+        preview.style.transformOrigin = '';
+        preview.style.marginBottom = '';
+        zoomLevel = scale;
 
-    const zoomLevelEl = document.getElementById('zoom-level');
-    if (zoomLevelEl) {
-        zoomLevelEl.textContent = '100%';
+        const zoomLevelEl = document.getElementById('zoom-level');
+        if (zoomLevelEl) {
+            zoomLevelEl.textContent = `${Math.round(scale * 100)}%`;
+        }
+    } else {
+        preview.style.zoom = '';
+        preview.style.transform = 'scale(1)';
+        preview.style.transformOrigin = '';
+        preview.style.marginBottom = '';
+        zoomLevel = 1.0;
+
+        const zoomLevelEl = document.getElementById('zoom-level');
+        if (zoomLevelEl) {
+            zoomLevelEl.textContent = '100%';
+        }
     }
-
-    zoomLevel = 1.0;
 }
 
 function handleImport() {

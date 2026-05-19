@@ -32,11 +32,16 @@ function preparePreviewForPDF(preview) {
         width: preview.style.width,
         maxHeight: preview.style.maxHeight,
         overflow: preview.style.overflow,
+        marginBottom: preview.style.marginBottom,
+        zoom: preview.style.zoom,
     };
 
+    // Reset all visual transforms for clean PDF capture
     preview.style.transform = 'none';
     preview.style.transformOrigin = '';
     preview.style.width = '8.5in';
+    preview.style.zoom = '1';
+    preview.style.marginBottom = '';
 
     return saved;
 }
@@ -47,6 +52,8 @@ function restorePreview(preview, saved) {
     preview.style.width = saved.width;
     preview.style.maxHeight = saved.maxHeight;
     preview.style.overflow = saved.overflow;
+    preview.style.marginBottom = saved.marginBottom;
+    preview.style.zoom = saved.zoom;
 }
 
 export function downloadPDF(cv) {
