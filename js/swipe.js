@@ -1,4 +1,5 @@
 // iOS-style swipe gesture for mobile action bar
+import { clearSelection } from './selection.js';
 
 let touchStartY = 0;
 let touchStartTime = 0;
@@ -42,7 +43,6 @@ function handleTouchEnd(e) {
 
     // Swipe down gesture: moved more than 50px in less than 300ms
     if (deltaY > 50 && deltaTime < 300) {
-        const { clearSelection } = import('./selection.js');
         clearSelection();
     }
 
