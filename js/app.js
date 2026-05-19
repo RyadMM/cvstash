@@ -144,51 +144,21 @@ function setupEventListeners() {
 
     // Keyboard shortcuts for undo/redo
     document.addEventListener('keydown', (e) => {
-        // Ctrl+Z / Cmd+Z for undo
-        if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
-            e.preventDefault();
-            const undone = undo();
-            if (undone) {
-                sidebar.initSidebar(sidebar.getCVs());
-                // Reload current CV content
-                const currentCV = sidebar.getCurrentCV();
-                if (currentCV) {
-                    loadContent(currentCV.content);
-                    updatePreview(currentCV.content);
-                    applyCVColor(currentCV);
-                }
-            }
-        }
+        if (!(e.ctrlKey || e.metaKey)) return;
 
-        // Ctrl+Shift+Z / Cmd+Shift+Z for redo
-        if ((e.ctrlKey || e.metaKey) && e.key === 'z' && e.shiftKey) {
-            e.preventDefault();
-            const redone = redo();
-            if (redone) {
-                sidebar.initSidebar(sidebar.getCVs());
-                // Reload current CV content
-                const currentCV = sidebar.getCurrentCV();
-                if (currentCV) {
-                    loadContent(currentCV.content);
-                    updatePreview(currentCV.content);
-                    applyCVColor(currentCV);
-                }
-            }
-        }
+        const isUndo = e.key === 'z' && !e.shiftKey;
+        const isRedo = (e.key === 'z' && e.shiftKey) || e.key === 'y';
+        if (!isUndo && !isRedo) return;
 
-        // Ctrl+Y / Cmd+Y for redo (Windows convention)
-        if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
-            e.preventDefault();
-            const redone = redo();
-            if (redone) {
-                sidebar.initSidebar(sidebar.getCVs());
-                // Reload current CV content
-                const currentCV = sidebar.getCurrentCV();
-                if (currentCV) {
-                    loadContent(currentCV.content);
-                    updatePreview(currentCV.content);
-                    applyCVColor(currentCV);
-                }
+        e.preventDefault();
+        const success = isUndo ? undo() : redo();
+        if (success) {
+            sidebar.initSidebar(sidebar.getCVs());
+            const currentCV = sidebar.getCurrentCV();
+            if (currentCV) {
+                loadContent(currentCV.content);
+                updatePreview(currentCV.content);
+                applyCVColor(currentCV);
             }
         }
     });

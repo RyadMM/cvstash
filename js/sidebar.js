@@ -127,17 +127,18 @@ export function updateCV(id, updates) {
     cvs[id] = { ...cvs[id], ...updates, lastModified: Date.now() };
 }
 
+function getUniqueName(baseName, existingNames) {
+    if (!existingNames.includes(baseName)) return baseName;
+    let counter = 2;
+    while (existingNames.includes(`${baseName} (${counter})`)) {
+        counter++;
+    }
+    return `${baseName} (${counter})`;
+}
+
 export function createCV(name, content) {
     const existingNames = Object.values(cvs).map(cv => cv.name);
-
-    let finalName = name;
-    if (existingNames.includes(finalName)) {
-        let counter = 2;
-        while (existingNames.includes(`${name} (${counter})`)) {
-            counter++;
-        }
-        finalName = `${name} (${counter})`;
-    }
+    const finalName = getUniqueName(name, existingNames);
 
     const id = 'cv-' + Date.now();
     cvs[id] = {
@@ -155,15 +156,8 @@ export function duplicateCV(id) {
     if (!cvs[id]) return;
 
     const original = cvs[id];
-    const baseName = original.name;
     const existingNames = Object.values(cvs).map(cv => cv.name);
-
-    let newName = `${baseName} (2)`;
-    let counter = 2;
-    while (existingNames.includes(newName)) {
-        counter++;
-        newName = `${baseName} (${counter})`;
-    }
+    const newName = getUniqueName(original.name, existingNames);
 
     const newId = 'cv-' + Date.now();
     cvs[newId] = {
