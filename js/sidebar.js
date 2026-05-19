@@ -120,11 +120,22 @@ export function updateCV(id, updates) {
 }
 
 export function createCV(name, content) {
+    const existingNames = Object.values(cvs).map(cv => cv.name);
+
+    let finalName = name;
+    if (existingNames.includes(finalName)) {
+        let counter = 2;
+        while (existingNames.includes(`${name} (${counter})`)) {
+            counter++;
+        }
+        finalName = `${name} (${counter})`;
+    }
+
     const id = 'cv-' + Date.now();
     cvs[id] = {
-        name: name,
+        name: finalName,
         content: content,
-        color: getGlobalAccentColor(),  // Inherit current global color
+        color: getGlobalAccentColor(),
         lastModified: Date.now()
     };
     currentCVId = id;
