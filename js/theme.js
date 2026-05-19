@@ -40,20 +40,9 @@ export function initTheme() {
     colorInput.value = savedColor;
     applyTheme(savedColor);
 
-    // Set initial icon color
-    const icon = colorBtn.querySelector('.theme-icon');
-    if (icon) {
-        icon.style.color = savedColor;
-    }
-
-    // Update icon color when theme changes
     colorInput.addEventListener('input', (e) => {
         const newColor = e.target.value;
-        if (icon) {
-            icon.style.color = newColor;
-        }
         applyTheme(newColor);
-        // Trigger custom event for CV color updates
         window.dispatchEvent(new CustomEvent('cvColorChange', { detail: { color: newColor } }));
     });
 }
@@ -69,15 +58,8 @@ function applyTheme(hexColor) {
 
 // Update color picker input and icon to match a color
 function updateColorPickerUI(color) {
-    const colorBtn = document.getElementById('accent-color-btn');
     const colorInput = document.getElementById('accent-color-input');
-    if (!colorBtn || !colorInput) return;
-
-    colorInput.value = color;
-    const icon = colorBtn.querySelector('.theme-icon');
-    if (icon) {
-        icon.style.color = color;
-    }
+    if (colorInput) colorInput.value = color;
 }
 
 export function getCurrentTheme() {
