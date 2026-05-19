@@ -602,4 +602,18 @@
     #editor {
         font-size: 16px;
     }
+
+    .onboarding-card {
+        padding: 28px 20px 0;
+        max-height: 95vh;
+    }
+
+    .help-modal-content {
+        max-height: 95vh;
+        border-radius: 12px;
+    }
+
+    .help-modal-body {
+        padding: 16px;
+    }
 }

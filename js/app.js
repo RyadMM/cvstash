@@ -3,8 +3,9 @@
 import * as storage from './storage.js';
 import { loadI18n, setLang, updateLanguageUI, updateLanguageButtons, t, getLang } from './i18n.js';
 import { initEditor, loadContent, getContent } from './editor.js';
-import { updatePreview, checkContentLength } from './preview.js';
+import { updatePreview, checkContentLength, setScaleMode } from './preview.js';
 import { downloadPDF } from './pdf.js';
+import { initOnboarding, showHelpModal, showWizard } from './onboarding.js';
 import { escapeHtml, showRenameModal, closeMobileMenu, toggleMobileMenu, toggleSidebar as uiToggleSidebar, initSidebar as uiInitSidebar, showBatchDeleteModal, hideBatchDeleteModal, showProgressOverlay, hideProgressOverlay, updateProgress, getDeleteCallback } from './ui.js';
 import * as sidebar from './sidebar.js';
 import { toggleSelectionMode, toggleCVSelection, selectAll, batchDownloadMD, batchDownloadPDF, batchDelete, clearSelection, getSelectedCVs } from './selection.js';
@@ -604,6 +605,7 @@ async function init() {
         window.lucide.createIcons();
     }
 
+    initOnboarding();
     requestInitialZoom();
 
     console.log('CV Stash initialized successfully');
@@ -622,6 +624,12 @@ function setupEventListeners() {
     document.getElementById('file-input').addEventListener('change', handleFileImport);
     document.getElementById('zoom-out-btn').addEventListener('click', handleZoomOut);
     document.getElementById('zoom-in-btn').addEventListener('click', handleZoomIn);
+    document.getElementById('scale-select').addEventListener('change', (e) => {
+        setScaleMode(e.target.value);
+    });
+
+    document.getElementById('help-btn').addEventListener('click', showHelpModal);
+    document.getElementById('empty-state-tour').addEventListener('click', showWizard);
 
     document.getElementById('sidebar-toggle').addEventListener('click', () => {
         uiToggleSidebar();
