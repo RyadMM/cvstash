@@ -580,7 +580,6 @@
     .empty-state .btn-action.btn-primary span {
         font-size: 16px;
     }
-}
 
     .empty-state-icon {
         width: 56px;
@@ -602,9 +601,14 @@
         max-width: 320px;
         margin: 0 auto 24px auto;
     }
+}
 
 @media screen and (min-width: 769px) {
     .mobile-overlay {
+        display: none !important;
+    }
+
+    .mobile-tab-bar {
         display: none !important;
     }
 }
