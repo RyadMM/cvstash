@@ -20,11 +20,18 @@ export class DeleteCommand {
     }
 
     execute() {
+        const deletedLastModified = this.cvs[this.cvId].lastModified;
         delete this.cvs[this.cvId];
 
-        // Update currentCVId if needed
-        if (this.cvId === this.currentCVId && Object.keys(this.cvs).length > 0) {
-            this.newCurrentCVId = Object.keys(this.cvs)[0];
+        const remaining = Object.keys(this.cvs);
+        if (remaining.length === 0) {
+            this.newCurrentCVId = null;
+        } else if (this.cvId === this.currentCVId) {
+            // Sort by lastModified descending (sidebar display order)
+            remaining.sort((a, b) => this.cvs[b].lastModified - this.cvs[a].lastModified);
+            // Pick next CV below the deleted one, or the previous one if last
+            const nextIndex = remaining.findIndex(id => this.cvs[id].lastModified <= deletedLastModified);
+            this.newCurrentCVId = remaining[nextIndex !== -1 ? nextIndex : remaining.length - 1];
         } else {
             this.newCurrentCVId = null;
         }
@@ -63,8 +70,11 @@ export class BatchDeleteCommand {
 
         // Update currentCVId if needed
         if (this.deletedCVs.some(({ id }) => id === this.currentCVId)) {
-            if (Object.keys(this.cvs).length > 0) {
-                this.newCurrentCVId = Object.keys(this.cvs)[0];
+            const remaining = Object.keys(this.cvs);
+            if (remaining.length > 0) {
+                // Sort by lastModified descending (sidebar display order), pick first
+                remaining.sort((a, b) => this.cvs[b].lastModified - this.cvs[a].lastModified);
+                this.newCurrentCVId = remaining[0];
             } else {
                 this.newCurrentCVId = null;
             }

@@ -584,6 +584,7 @@ async function init() {
 
     const cvs = storage.loadCVs();
     sidebar.initSidebar(cvs);
+    sidebar.setAfterDeleteCallback(() => updateViewState());
 
     initEditor(handleEditorInput);
     initSwipeGesture();
@@ -1119,7 +1120,8 @@ function createCVFromTemplate(templateType) {
             break;
         case 'example':
             content = getNextSampleCV();
-            name = t('newExampleCV') || 'New Example CV';
+            const match = content.match(/^#\s+(.+)/m);
+            name = match ? match[1].trim() : (t('newExampleCV') || 'New Example CV');
             break;
     }
 

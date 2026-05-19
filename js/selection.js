@@ -147,11 +147,6 @@ export async function batchDownloadPDF(cvs) {
 export function batchDelete(cvs) {
     const selectedIds = Array.from(selectedCVs);
 
-    if (selectedIds.length >= Object.keys(cvs).length) {
-        alert(t('cannotDeleteAll') || 'Cannot delete all CVs. Keep at least one.');
-        return false;
-    }
-
     const currentCVId = localStorage.getItem('currentCVId');
     const command = new BatchDeleteCommand(selectedIds, cvs, currentCVId);
     command.execute();

@@ -9,6 +9,10 @@ import { showToast } from './toast.js';
 import { applyCVColor, getGlobalAccentColor, setCVColor } from './theme.js';
 import { saveCVs } from './storage.js';
 
+// Callback triggered after a CV is deleted (for view state updates)
+let afterDeleteCallback = null;
+export function setAfterDeleteCallback(cb) { afterDeleteCallback = cb; }
+
 let currentCVId = null;
 let cvs = {};
 
@@ -44,10 +48,14 @@ export function initSidebar(initialCVs) {
 }
 
 export function getCurrentCVId() {
+    if (currentCVId && cvs[currentCVId]) {
+        return currentCVId;
+    }
     const savedCurrentId = localStorage.getItem('currentCVId');
     if (savedCurrentId && cvs[savedCurrentId]) {
         return savedCurrentId;
-    } else if (Object.keys(cvs).length > 0) {
+    }
+    if (Object.keys(cvs).length > 0) {
         return Object.keys(cvs)[0];
     }
     return null;
@@ -173,11 +181,6 @@ export function duplicateCV(id) {
 export function deleteCV(id) {
     if (!cvs[id]) return;
 
-    if (Object.keys(cvs).length <= 1) {
-        alert(t('cannotDeleteLast'));
-        return false;
-    }
-
     // Skip confirmation if user chose "don't show again"
     if (shouldSkipDeleteConfirm()) {
         return performDeleteWithUndo(id);
@@ -186,8 +189,11 @@ export function deleteCV(id) {
     // Show custom modal
     showDeleteModal(cvs[id].name,
         () => { // onConfirm
-            performDeleteWithUndo(id);
             hideDeleteModal();
+            if (performDeleteWithUndo(id)) {
+                saveCVs(cvs, currentCVId);
+                if (afterDeleteCallback) afterDeleteCallback();
+            }
         },
         () => { // onCancel
             hideDeleteModal();
@@ -199,8 +205,11 @@ export function deleteCV(id) {
 
 function performDeleteWithUndo(id) {
     const command = new DeleteCommand(id, cvs, currentCVId);
-    command.execute();
     executeCommand(command);
+    // Point currentCVId to the next CV (or null if all deleted)
+    if (id === currentCVId) {
+        currentCVId = command.newCurrentCVId;
+    }
     renderCVList();
 
     // Show toast with undo option
