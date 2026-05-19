@@ -24,7 +24,7 @@
     <input type="file" id="file-input" accept=".md,.txt">
 
     <!-- Rename Modal -->
-    <div id="rename-modal" class="rename-modal">
+    <div id="rename-modal" class="rename-modal" role="dialog" aria-modal="true" aria-labelledby="rename-modal-title">
         <div class="rename-modal-content">
             <div id="rename-modal-title" class="rename-modal-title">Rename CV</div>
             <input type="text" id="rename-input" class="rename-modal-input" placeholder="CV name">
@@ -36,7 +36,7 @@
     </div>
 
     <!-- Template Picker Modal -->
-    <div id="template-picker-modal" class="template-picker-modal">
+    <div id="template-picker-modal" class="template-picker-modal" role="dialog" aria-modal="true" aria-labelledby="template-picker-title">
         <div class="template-picker-content">
             <h3 id="template-picker-title" class="template-picker-title">Choose a Template</h3>
             <div class="template-picker-cards">
@@ -63,7 +63,7 @@
     <div id="mobile-overlay" class="mobile-overlay"></div>
 
     <!-- Progress Overlay -->
-    <div id="progress-overlay" class="progress-overlay">
+    <div id="progress-overlay" class="progress-overlay" role="dialog" aria-modal="true" aria-labelledby="progress-title">
         <div class="progress-content">
             <div class="progress-spinner"></div>
             <div id="progress-title" class="progress-title">Generating PDFs</div>
@@ -76,7 +76,7 @@
     </div>
 
     <!-- Batch Delete Modal -->
-    <div id="batch-delete-modal" class="batch-delete-modal">
+    <div id="batch-delete-modal" class="batch-delete-modal" role="dialog" aria-modal="true" aria-labelledby="batch-delete-title">
         <div class="batch-delete-content">
             <div id="batch-delete-title" class="batch-delete-title">Delete 3 CVs?</div>
             <div id="batch-delete-count" class="batch-delete-count">These CVs will be permanently deleted:</div>
@@ -90,7 +90,7 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div id="delete-modal" class="delete-modal">
+    <div id="delete-modal" class="delete-modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
         <div class="delete-modal-content">
             <div class="delete-modal-header">
                 <h3 id="delete-modal-title" class="delete-modal-title">Delete CV?</h3>
@@ -204,13 +204,13 @@
                 <!-- Editor & Preview Panels -->
                 <div id="editor-preview-wrapper" class="flex-1 flex flex-col overflow-hidden">
                     <!-- Unified Tab Bar -->
-                    <div class="tab-bar">
+                    <div class="tab-bar" role="tablist">
                         <div class="tab-bar-left">
-                            <button class="tab-btn active" data-tab="editor" id="editor-tab">
+                            <button class="tab-btn active" data-tab="editor" id="editor-tab" role="tab" aria-selected="true" aria-controls="editor-panel">
                                 <i data-lucide="edit-3"></i>
                                 <span id="editor-label">Editor</span>
                             </button>
-                            <button class="tab-btn" data-tab="preview" id="preview-tab">
+                            <button class="tab-btn" data-tab="preview" id="preview-tab" role="tab" aria-selected="false" aria-controls="preview-panel">
                                 <i data-lucide="file-text"></i>
                                 <span id="preview-label">Preview</span>
                             </button>
@@ -256,7 +256,7 @@
                     </div>
 
                     <!-- Editor Panel -->
-                    <div class="panel-content active" id="editor-panel">
+                    <div class="panel-content active" id="editor-panel" role="tabpanel" aria-labelledby="editor-tab">
                         <div class="flex-1 overflow-hidden relative">
                             <button id="editor-copy-btn" class="editor-copy-btn" title="Copy to clipboard">
                                 <i data-lucide="copy"></i>
@@ -267,7 +267,7 @@
                     </div>
 
                     <!-- Preview Panel -->
-                    <div class="panel-content" id="preview-panel">
+                    <div class="panel-content" id="preview-panel" role="tabpanel" aria-labelledby="preview-tab">
                         <div class="flex-1 overflow-auto">
                             <div class="preview-wrapper">
                                 <div id="preview" class="cv-template"></div>
@@ -328,7 +328,7 @@
     </div>
 
     <!-- Help Modal -->
-    <div id="help-modal" class="help-modal">
+    <div id="help-modal" class="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-modal-title">
         <div class="help-modal-content">
             <div class="help-modal-header">
                 <h2 id="help-modal-title"></h2>
@@ -342,7 +342,7 @@
     </div>
 
     <!-- Toast Container -->
-    <div id="toast-container" class="toast-container"></div>
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
     <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js" integrity="sha384-GeYpwgp5GkQmpZrq04tb+TdM3a4Qseb6szt1//UDCTMBnEn71dBrhgQwHMgNPcY4" crossorigin="anonymous"></script>

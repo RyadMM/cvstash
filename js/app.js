@@ -179,6 +179,8 @@ function switchTab(tab) {
     if (tab === 'editor') {
         editorTab.classList.add('active');
         previewTab.classList.remove('active');
+        editorTab.setAttribute('aria-selected', 'true');
+        previewTab.setAttribute('aria-selected', 'false');
         editorPanel.classList.add('active');
         previewPanel.classList.remove('active');
         editorActions.style.display = 'flex';
@@ -187,6 +189,8 @@ function switchTab(tab) {
     } else {
         previewTab.classList.add('active');
         editorTab.classList.remove('active');
+        previewTab.setAttribute('aria-selected', 'true');
+        editorTab.setAttribute('aria-selected', 'false');
         previewPanel.classList.add('active');
         editorPanel.classList.remove('active');
         editorActions.style.display = 'none';
