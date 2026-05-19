@@ -89,6 +89,19 @@ export function updateLanguageUI() {
     document.getElementById('batch-delete-confirm').textContent = t.delete;
     document.getElementById('progress-cancel').textContent = t.cancel;
 
+    // Delete modal
+    document.getElementById('delete-modal-title').textContent = t.deleteCVTitle;
+    document.getElementById('delete-cancel').textContent = t.cancel;
+    document.getElementById('delete-confirm').textContent = t.delete;
+    document.getElementById('delete-dont-show').nextElementSibling.textContent = t.deleteDontShow;
+
+    // Rename input placeholder
+    document.getElementById('rename-input').placeholder = t.renamePlaceholder;
+
+    // Empty state tour button
+    const tourBtn = document.getElementById('empty-state-tour');
+    if (tourBtn) tourBtn.querySelector('span').textContent = t.showMeAround;
+
     // Template picker modal
     document.getElementById('template-picker-title').textContent = t.chooseTemplate;
     document.getElementById('template-blank-label').textContent = t.blankLabel;

@@ -29,7 +29,7 @@ export function showRenameModal(name, onSave, onCancel) {
     const saveHandler = () => {
         const newName = input.value.trim();
         if (!newName) {
-            alert(t('cancel') === 'Cancel' ? 'Name cannot be empty' : 'Le nom ne peut pas être vide');
+            alert(t('nameEmpty'));
             return;
         }
         onSave(newName);
@@ -70,7 +70,7 @@ export function showProgressOverlay(total) {
     const bar = document.getElementById('progress-bar');
 
     title.textContent = t('generatingPDFs') || 'Generating PDFs';
-    status.textContent = `Processing 1 of ${total}...`;
+    status.textContent = t('progressInit', { total });
     bar.style.width = '0%';
 
     overlay.classList.add('show');
@@ -80,7 +80,7 @@ export function updateProgress(current, total, name) {
     const status = document.getElementById('progress-status');
     const bar = document.getElementById('progress-bar');
 
-    status.textContent = `${current}/${total}: ${escapeHtml(name)}`;
+    status.textContent = t('progressStatus', { current, total, name: escapeHtml(name) });
     const percentage = (current / total) * 100;
     bar.style.width = `${percentage}%`;
 }
@@ -95,8 +95,9 @@ export function showBatchDeleteModal(cvs, selectedIds, onConfirm, onCancel) {
     const list = document.getElementById('batch-delete-list');
     const count = document.getElementById('batch-delete-count');
 
-    title.textContent = `Delete ${selectedIds.length} CV${selectedIds.length > 1 ? 's' : ''}?`;
-    count.textContent = `These CV${selectedIds.length > 1 ? 's' : ''} will be permanently deleted:`;
+    const s = selectedIds.length > 1 ? 's' : '';
+    title.textContent = t('batchDeleteTitle', { count: selectedIds.length, s });
+    count.textContent = t('batchDeleteWarning', { s });
 
     list.innerHTML = selectedIds.map(id => {
         const cv = cvs[id];
@@ -128,7 +129,7 @@ export function showDeleteModal(cvName, onConfirm, onCancel) {
     const message = document.getElementById('delete-modal-message');
     const checkbox = document.getElementById('delete-dont-show');
 
-    message.textContent = `Are you sure you want to delete "${cvName}"? This action cannot be undone.`;
+    message.textContent = t('deleteMessage', { name: cvName });
     checkbox.checked = false;
 
     modal.classList.add('show');
