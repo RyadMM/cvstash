@@ -496,6 +496,34 @@
     }
 }
 
+/* Template picker on small screens */
+@media screen and (max-width: 520px) {
+    .template-picker-content {
+        padding: 20px 16px;
+        width: 100%;
+        max-width: calc(100vw - 32px);
+    }
+
+    .template-picker-cards {
+        flex-direction: column;
+    }
+
+    .template-card {
+        flex-direction: row;
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .template-card-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .template-card-desc {
+        text-align: left;
+    }
+}
+
 /* Extra small screens */
 @media screen and (max-width: 480px) {
     .lang-switcher {

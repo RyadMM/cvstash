@@ -650,6 +650,16 @@ function setupEventListeners() {
     document.getElementById('batch-delete-btn').addEventListener('click', handleShowBatchDeleteModal);
     document.getElementById('progress-cancel').addEventListener('click', handleCancelBatchOperation);
 
+    // Template picker
+    document.querySelectorAll('.template-card').forEach(card => {
+        card.addEventListener('click', () => {
+            createCVFromTemplate(card.dataset.template);
+        });
+    });
+    document.getElementById('template-picker-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'template-picker-modal') hideTemplatePicker();
+    });
+
     document.getElementById('delete-confirm').addEventListener('click', () => {
         const checkbox = document.getElementById('delete-dont-show');
         if (checkbox && checkbox.checked) {
@@ -994,14 +1004,92 @@ function handleFileImport(event) {
 }
 
 function handleCreateNewCV() {
-    const defaultName = t('newCV') || 'New CV';
-    const templateContent = templateCV;
-    sidebar.createCV(defaultName, templateContent);
+    showTemplatePicker();
+}
+
+function showTemplatePicker() {
+    document.getElementById('template-picker-modal').classList.add('show');
+}
+
+function hideTemplatePicker() {
+    document.getElementById('template-picker-modal').classList.remove('show');
+}
+
+function getBlankCV() {
+    return `# ${t('newCV') || 'My CV'}\n`;
+}
+
+function getPlaceholderCV() {
+    const lang = getLang();
+    if (lang === 'fr') {
+        return `# Votre Nom
+## Votre Titre Professionnel
+
+## Profil
+Brève description de votre parcours professionnel et de vos compétences clés...
+
+## Expérience
+### Intitulé du Poste | Nom de l'Entreprise
+**Date de début – Date de fin**
+- Réalisation ou responsabilité clé...
+- Autre accomplissement notable...
+
+## Compétences
+- **Compétences Techniques** : Compétence 1, Compétence 2, Compétence 3
+- **Langues** : Français (natif), Anglais (intermédiaire)
+
+## Formation
+### Diplôme | Établissement
+**Année d'obtention**
+`;
+    }
+    return `# Your Name
+## Your Job Title
+
+## Summary
+Brief description of your professional background and key strengths...
+
+## Experience
+### Job Title | Company Name
+**Start Date – End Date**
+- Key achievement or responsibility...
+- Another accomplishment...
+
+## Skills
+- **Technical Skills**: Skill 1, Skill 2, Skill 3
+- **Languages**: English (native), French (intermediate)
+
+## Education
+### Degree | Institution
+**Graduation Year**
+`;
+}
+
+function createCVFromTemplate(templateType) {
+    let content = '';
+    let name = '';
+    switch (templateType) {
+        case 'blank':
+            content = getBlankCV();
+            name = t('newBlankCV') || 'New Blank CV';
+            break;
+        case 'placeholder':
+            content = getPlaceholderCV();
+            name = t('newPlaceholderCV') || 'New Placeholder CV';
+            break;
+        case 'example':
+            content = getNextSampleCV();
+            name = t('newExampleCV') || 'New Example CV';
+            break;
+    }
+
+    sidebar.createCV(name, content);
     storage.saveCVs(sidebar.getCVs(), sidebar.getCurrentCVId());
     loadCurrentCV();
     updateViewState();
     clearSelection();
     closeMobileMenu();
+    hideTemplatePicker();
 }
 
 function handleCVClick(id) {

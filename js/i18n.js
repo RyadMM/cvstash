@@ -82,6 +82,15 @@ export function updateLanguageUI() {
     document.getElementById('batch-delete-confirm').textContent = t.delete;
     document.getElementById('progress-cancel').textContent = t.cancel;
 
+    // Template picker modal
+    document.getElementById('template-picker-title').textContent = t.chooseTemplate;
+    document.getElementById('template-blank-label').textContent = t.blankLabel;
+    document.getElementById('template-blank-desc').textContent = t.blankDesc;
+    document.getElementById('template-placeholder-label').textContent = t.placeholderLabel;
+    document.getElementById('template-placeholder-desc').textContent = t.placeholderDesc;
+    document.getElementById('template-example-label').textContent = t.exampleLabel;
+    document.getElementById('template-example-desc').textContent = t.exampleDesc;
+
     const charLimit = document.getElementById('char-limit');
     if (charLimit) {
         charLimit.textContent = '2500';

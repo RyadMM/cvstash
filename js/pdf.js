@@ -6,9 +6,10 @@ import { generatePDFFilename } from './storage.js';
 function createPDFElement(content) {
     const element = document.createElement('div');
     element.className = 'cv-template';
-    element.style.position = 'fixed';
-    element.style.left = '-9999px';
+    element.style.position = 'absolute';
+    element.style.left = '0';
     element.style.top = '0';
+    element.style.zIndex = '-1';
     element.style.width = '8.5in';
     element.style.minHeight = 'auto';
     element.style.transform = 'none';

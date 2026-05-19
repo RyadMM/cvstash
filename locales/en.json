@@ -44,5 +44,15 @@
     "cvsDeleted": "{count} CVs deleted",
     "cvRenamed": "Renamed to \"{name}\"",
     "cvEdited": "Changes saved",
-    "undoFailed": "Undo failed"
+    "undoFailed": "Undo failed",
+    "chooseTemplate": "Choose a Template",
+    "blankLabel": "Blank",
+    "blankDesc": "Start from scratch",
+    "placeholderLabel": "With Placeholders",
+    "placeholderDesc": "Structured template with guidance",
+    "exampleLabel": "Complete Example",
+    "exampleDesc": "Fully written sample CV",
+    "newBlankCV": "New Blank CV",
+    "newPlaceholderCV": "New Placeholder CV",
+    "newExampleCV": "New Example CV"
 }

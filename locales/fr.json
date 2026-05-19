@@ -44,5 +44,15 @@
     "cvsDeleted": "{count} CVs supprimés",
     "cvRenamed": "Renommé en \"{name}\"",
     "cvEdited": "Modifications enregistrées",
-    "undoFailed": "Échec de l'annulation"
+    "undoFailed": "Échec de l'annulation",
+    "chooseTemplate": "Choisir un modèle",
+    "blankLabel": "Vierge",
+    "blankDesc": "Commencer de zéro",
+    "placeholderLabel": "Avec espaces réservés",
+    "placeholderDesc": "Modèle structuré avec indications",
+    "exampleLabel": "Exemple complet",
+    "exampleDesc": "CV d'exemple entièrement rédigé",
+    "newBlankCV": "Nouveau CV vierge",
+    "newPlaceholderCV": "Nouveau CV avec espaces réservés",
+    "newExampleCV": "Nouveau CV d'exemple"
 }

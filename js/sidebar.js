@@ -136,13 +136,21 @@ export function duplicateCV(id) {
     if (!cvs[id]) return;
 
     const original = cvs[id];
-    const newName = `${original.name} (copy)`;
+    const baseName = original.name;
+    const existingNames = Object.values(cvs).map(cv => cv.name);
+
+    let newName = `${baseName} (2)`;
+    let counter = 2;
+    while (existingNames.includes(newName)) {
+        counter++;
+        newName = `${baseName} (${counter})`;
+    }
 
     const newId = 'cv-' + Date.now();
     cvs[newId] = {
         name: newName,
         content: original.content,
-        color: original.color || getGlobalAccentColor(),  // Preserve original color
+        color: original.color || getGlobalAccentColor(),
         lastModified: Date.now()
     };
 
