@@ -36,16 +36,13 @@ export class DeleteCommand {
         } else {
             this.newCurrentCVId = null;
         }
+
+        saveCVs(this.cvs, this.newCurrentCVId || this.currentCVId);
     }
 
     undo() {
-        // Restore the CV
         this.cvs[this.cvId] = this.deletedCV;
-
-        // Restore currentCVId if it was changed
-        if (this.newCurrentCVId) {
-            saveCVs(this.cvs, this.cvId);
-        }
+        saveCVs(this.cvs, this.cvId);
     }
 
     getDescription() {
@@ -73,7 +70,6 @@ export class BatchDeleteCommand {
         if (this.deletedCVs.some(({ id }) => id === this.currentCVId)) {
             const remaining = Object.keys(this.cvs);
             if (remaining.length > 0) {
-                // Sort by lastModified descending (sidebar display order), pick first
                 remaining.sort((a, b) => this.cvs[b].lastModified - this.cvs[a].lastModified);
                 this.newCurrentCVId = remaining[0];
             } else {
@@ -82,18 +78,15 @@ export class BatchDeleteCommand {
         } else {
             this.newCurrentCVId = null;
         }
+
+        saveCVs(this.cvs, this.newCurrentCVId || this.currentCVId);
     }
 
     undo() {
-        // Restore all CVs
         this.deletedCVs.forEach(({ id, cv }) => {
             this.cvs[id] = cv;
         });
-
-        // Restore currentCVId if it was changed
-        if (this.newCurrentCVId) {
-            saveCVs(this.cvs, this.currentCVId);
-        }
+        saveCVs(this.cvs, this.currentCVId);
     }
 
     getDescription() {
@@ -114,6 +107,7 @@ export class RenameCommand {
         if (this.cvs[this.cvId]) {
             this.cvs[this.cvId].name = this.newName;
             this.cvs[this.cvId].lastModified = Date.now();
+            saveCVs(this.cvs);
         }
     }
 
@@ -121,6 +115,7 @@ export class RenameCommand {
         if (this.cvs[this.cvId]) {
             this.cvs[this.cvId].name = this.oldName;
             this.cvs[this.cvId].lastModified = Date.now();
+            saveCVs(this.cvs);
         }
     }
 
@@ -142,6 +137,7 @@ export class EditCommand {
         if (this.cvs[this.cvId]) {
             this.cvs[this.cvId].content = this.newContent;
             this.cvs[this.cvId].lastModified = Date.now();
+            saveCVs(this.cvs);
         }
     }
 
@@ -149,6 +145,7 @@ export class EditCommand {
         if (this.cvs[this.cvId]) {
             this.cvs[this.cvId].content = this.oldContent;
             this.cvs[this.cvId].lastModified = Date.now();
+            saveCVs(this.cvs);
         }
     }
 

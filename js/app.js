@@ -284,7 +284,6 @@ function handleEditorInput(content) {
     }
 
     const cvs = sidebar.getCVs();
-    storage.saveCVs(cvs, currentCVId);
 
     updatePreview(content);
     checkContentLength();
@@ -460,7 +459,6 @@ function handleFileImport(event) {
         const content = e.target.result;
         const name = storage.extractName(content) || 'Imported CV';
         sidebar.createCV(name, content);
-        storage.saveCVs(sidebar.getCVs(), sidebar.getCurrentCVId());
         updateViewState();
         event.target.value = '';
         closeMobileMenu();
@@ -492,7 +490,6 @@ function createCVFromTemplate(templateType) {
     }
 
     sidebar.createCV(name, content);
-    storage.saveCVs(sidebar.getCVs(), sidebar.getCurrentCVId());
     loadCurrentCV();
     updateViewState();
     clearSelection();
@@ -502,7 +499,6 @@ function createCVFromTemplate(templateType) {
 
 function handleCVClick(id) {
     sidebar.selectCV(id);
-    storage.saveCVs(sidebar.getCVs(), sidebar.getCurrentCVId());
     loadCurrentCV();
     clearSelection();
 }
@@ -518,9 +514,7 @@ function handleRename(id) {
         const command = new RenameCommand(id, oldName, newName, cvs);
         executeCommand(command);
 
-        const updatedCVs = sidebar.getCVs();
-        storage.saveCVs(updatedCVs, sidebar.getCurrentCVId());
-        sidebar.initSidebar(updatedCVs);
+        sidebar.initSidebar(sidebar.getCVs());
         renamingCVId = null;
 
         // Show toast with undo option
@@ -543,14 +537,12 @@ function handleRename(id) {
 function handleDuplicate(id) {
     const newCV = sidebar.duplicateCV(id);
     if (newCV) {
-        storage.saveCVs(sidebar.getCVs(), sidebar.getCurrentCVId());
         loadCurrentCV();
     }
 }
 
 function handleDelete(id) {
     if (sidebar.deleteCV(id)) {
-        storage.saveCVs(sidebar.getCVs(), sidebar.getCurrentCVId());
         updateViewState();
     }
 }
@@ -573,7 +565,6 @@ function handleShowBatchDeleteModal() {
 
     showBatchDeleteModal(cvs, selectedIds, () => {
         if (batchDelete(cvs)) {
-            storage.saveCVs(cvs, sidebar.getCurrentCVId());
             sidebar.setCVs(cvs);
             sidebar.initSidebar(cvs);
             updateViewState();

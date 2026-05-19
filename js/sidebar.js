@@ -16,6 +16,10 @@ export function setAfterDeleteCallback(cb) { afterDeleteCallback = cb; }
 let currentCVId = null;
 let cvs = {};
 
+function persist() {
+    saveCVs(cvs, currentCVId);
+}
+
 function formatRelativeTime(timestamp) {
     const now = Date.now();
     const diff = now - timestamp;
@@ -42,7 +46,7 @@ export function initSidebar(initialCVs) {
     window.addEventListener('cvColorChange', (e) => {
         if (currentCVId) {
             setCVColor(currentCVId, e.detail.color, cvs);
-            saveCVs(cvs, currentCVId);
+            persist();
         }
     });
 }
@@ -113,8 +117,8 @@ export function selectCV(id) {
     if (!cvs[id]) return;
     currentCVId = id;
     renderCVList();
-    // Apply the CV's color to the theme
     applyCVColor(cvs[id]);
+    persist();
     return cvs[id];
 }
 
@@ -125,6 +129,7 @@ export function getCurrentCV() {
 export function updateCV(id, updates) {
     if (!cvs[id]) return;
     cvs[id] = { ...cvs[id], ...updates, lastModified: Date.now() };
+    persist();
 }
 
 function getUniqueName(baseName, existingNames) {
@@ -149,6 +154,7 @@ export function createCV(name, content) {
     };
     currentCVId = id;
     renderCVList();
+    persist();
     return cvs[id];
 }
 
@@ -169,6 +175,7 @@ export function duplicateCV(id) {
 
     currentCVId = newId;
     renderCVList();
+    persist();
     return cvs[newId];
 }
 
@@ -185,7 +192,6 @@ export function deleteCV(id) {
         () => { // onConfirm
             hideDeleteModal();
             if (performDeleteWithUndo(id)) {
-                saveCVs(cvs, currentCVId);
                 if (afterDeleteCallback) afterDeleteCallback();
             }
         },
@@ -231,6 +237,7 @@ export function renameCV(id, newName) {
     cvs[id].name = newName;
     cvs[id].lastModified = Date.now();
     renderCVList();
+    persist();
     return true;
 }
 
