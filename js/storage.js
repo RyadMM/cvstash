@@ -2,31 +2,14 @@
 
 export function loadCVs() {
     const savedCVs = localStorage.getItem('cvs');
-    let cvs = {};
+    if (!savedCVs) return {};
 
-    if (savedCVs) {
-        try {
-            cvs = JSON.parse(savedCVs);
-        } catch (e) {
-            console.error('Failed to parse saved CVs, resetting:', e);
-            cvs = {};
-        }
-    } else {
-        const legacyContent = localStorage.getItem('cv-content');
-        if (legacyContent) {
-            const initialName = extractName(legacyContent);
-            const id = 'cv-' + Date.now();
-            cvs[id] = {
-                name: initialName,
-                content: legacyContent,
-                lastModified: Date.now()
-            };
-            localStorage.setItem('cvs', JSON.stringify(cvs));
-            localStorage.removeItem('cv-content');
-        }
+    try {
+        return JSON.parse(savedCVs);
+    } catch (e) {
+        console.error('Failed to parse saved CVs, resetting:', e);
+        return {};
     }
-
-    return cvs;
 }
 
 export function saveCVs(cvs, currentCVId) {
