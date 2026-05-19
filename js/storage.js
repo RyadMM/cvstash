@@ -59,6 +59,14 @@ export function saveSidebarCollapsed(collapsed) {
     localStorage.setItem('cv-sidebar-collapsed', collapsed);
 }
 
+export function loadSkipDeleteConfirm() {
+    return localStorage.getItem('skipDeleteConfirm') === 'true';
+}
+
+export function saveSkipDeleteConfirm() {
+    localStorage.setItem('skipDeleteConfirm', 'true');
+}
+
 export function extractName(content) {
     const match = content.match(/^#\s+(.+)$/m);
     return match ? match[1].trim().substring(0, 30) : 'Untitled';

@@ -126,7 +126,7 @@ function setupEventListeners() {
     document.getElementById('delete-confirm').addEventListener('click', () => {
         const checkbox = document.getElementById('delete-dont-show');
         if (checkbox && checkbox.checked) {
-            localStorage.setItem('skipDeleteConfirm', 'true');
+            storage.saveSkipDeleteConfirm();
         }
         const callback = getDeleteCallback();
         if (callback) callback.onConfirm();
@@ -304,16 +304,15 @@ function handleEditorInput(content) {
     }, EDIT_TRACK_DEBOUNCE_MS);
 }
 
-function handleLanguageChange(lang) {
+async function handleLanguageChange(lang) {
     if (lang === storage.loadLanguage()) return;
 
     storage.saveLanguage(lang);
     setLang(lang);
-    loadI18n().then(() => {
-        updateLanguageUI();
-        updateLanguageButtons();
-        sidebar.renderCVList();
-    });
+    await loadI18n();
+    updateLanguageUI();
+    updateLanguageButtons();
+    sidebar.renderCVList();
 }
 
 function handleDownloadPDF() {

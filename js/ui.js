@@ -147,7 +147,7 @@ export function getDeleteCallback() {
 }
 
 export function shouldSkipDeleteConfirm() {
-    return localStorage.getItem('skipDeleteConfirm') === 'true';
+    return storage.loadSkipDeleteConfirm();
 }
 
 export function toggleSidebar() {

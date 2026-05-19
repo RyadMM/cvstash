@@ -1,4 +1,5 @@
 import { t } from './i18n.js';
+import { refreshIcons } from './icons.js';
 
 const TOTAL_STEPS = 4;
 const STORAGE_KEY = 'cv-onboarding-complete';
@@ -97,9 +98,7 @@ function renderStep() {
     document.getElementById('onboarding-done').textContent = t('obDone');
 
     // Re-create Lucide icons in the active step
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
+    refreshIcons();
 }
 
 function setupWizardNav() {
