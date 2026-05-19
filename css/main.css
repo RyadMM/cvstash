@@ -77,7 +77,7 @@ body {
 }
 
 /* Show on editor hover */
-.flex-1.overflow-hidden:hover .editor-copy-btn {
+#editor-panel:hover .editor-copy-btn {
     opacity: 1;
 }
 
@@ -314,11 +314,86 @@ body {
     align-items: center;
 }
 
-/* Desktop panel container */
-.desktop-panel-container {
+/* === Unified Tab Bar === */
+.tab-bar {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    height: 56px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+.tab-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #f4f4f5;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.tab-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: #71717a;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+}
+
+.tab-btn.active {
+    background: white;
+    color: var(--accent-color, #f97316);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    font-weight: 600;
+}
+
+.tab-btn:hover:not(.active) {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.tab-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Tab actions containers */
+.tab-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Panel content */
+.panel-content {
+    display: none;
     flex-direction: column;
-    width: 100%;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.panel-content.active {
+    display: flex;
 }
 
 /* Main header */
@@ -1439,21 +1514,6 @@ body.selection-mode .cv-checkbox {
 /* Editor and preview panels */
 #editor-preview-wrapper {
     gap: 0;
-}
-
-#editor-preview-wrapper > div:first-child {
-    background: white;
-}
-
-#editor-preview-wrapper > div:last-child {
-    background: #fafafa;
-}
-
-/* Large screens - adjust panel header padding while maintaining consistent height */
-@media screen and (min-width: 1200px) {
-    .panel-header {
-        padding: 14px 28px;
-    }
 }
 
 /* Lucide Icons */

@@ -8,7 +8,7 @@ import { downloadPDF } from './pdf.js';
 import { escapeHtml, showRenameModal, closeMobileMenu, toggleMobileMenu, toggleSidebar as uiToggleSidebar, initSidebar as uiInitSidebar, showBatchDeleteModal, hideBatchDeleteModal, showProgressOverlay, hideProgressOverlay, updateProgress, getDeleteCallback } from './ui.js';
 import * as sidebar from './sidebar.js';
 import { toggleSelectionMode, toggleCVSelection, selectAll, batchDownloadMD, batchDownloadPDF, batchDelete, clearSelection, getSelectedCVs } from './selection.js';
-import { initSwipeGesture, destroySwipeGesture } from './swipe.js';
+import { initSwipeGesture, destroySwipeGesture, initPanelSwipe } from './swipe.js';
 import { initTheme, setTheme, applyCVColor } from './theme.js';
 import { executeCommand, undo, redo } from './history.js';
 import { RenameCommand, EditCommand } from './commands.js';
@@ -586,10 +586,11 @@ async function init() {
 
     initEditor(handleEditorInput);
     initSwipeGesture();
+    initPanelSwipe(switchTab);
 
     setupEventListeners();
     updateViewState();
-    initMobileTab();
+    initTabs();
 
     initTheme();
 
@@ -637,13 +638,9 @@ function setupEventListeners() {
     document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
     document.getElementById('mobile-overlay').addEventListener('click', closeMobileMenu);
 
-    // Mobile tab switching
-    document.getElementById('mobile-editor-tab').addEventListener('click', () => switchMobileTab('editor'));
-    document.getElementById('mobile-preview-tab').addEventListener('click', () => switchMobileTab('preview'));
-
-    // Mobile import/export buttons
-    document.getElementById('mobile-import-btn').addEventListener('click', handleImport);
-    document.getElementById('mobile-export-btn').addEventListener('click', handleExport);
+    // Tab switching
+    document.getElementById('editor-tab').addEventListener('click', () => switchTab('editor'));
+    document.getElementById('preview-tab').addEventListener('click', () => switchTab('preview'));
 
     document.getElementById('empty-state-new-cv').addEventListener('click', handleCreateNewCV);
 
@@ -726,33 +723,31 @@ function setupEventListeners() {
     setupCVListListeners();
 }
 
-// Mobile tab switching
-function switchMobileTab(tab) {
-    const editorTab = document.getElementById('mobile-editor-tab');
-    const previewTab = document.getElementById('mobile-preview-tab');
-    const editorPanel = document.getElementById('mobile-editor-panel');
-    const previewPanel = document.getElementById('mobile-preview-panel');
+// Tab switching
+function switchTab(tab) {
+    const editorTab = document.getElementById('editor-tab');
+    const previewTab = document.getElementById('preview-tab');
+    const editorPanel = document.getElementById('editor-panel');
+    const previewPanel = document.getElementById('preview-panel');
+    const editorActions = document.getElementById('editor-actions');
+    const previewActions = document.getElementById('preview-actions');
     const editor = document.getElementById('editor');
 
     if (tab === 'editor') {
-        // Set editor tab as active
         editorTab.classList.add('active');
         previewTab.classList.remove('active');
-
-        // Show editor panel, hide preview panel
         editorPanel.classList.add('active');
         previewPanel.classList.remove('active');
-
-        // Focus editor
+        editorActions.style.display = 'flex';
+        previewActions.style.display = 'none';
         editor.focus();
     } else {
-        // Set preview tab as active
         previewTab.classList.add('active');
         editorTab.classList.remove('active');
-
-        // Show preview panel, hide editor panel
         previewPanel.classList.add('active');
         editorPanel.classList.remove('active');
+        editorActions.style.display = 'none';
+        previewActions.style.display = 'flex';
 
         // Update preview with current content
         const currentContent = getContent();
@@ -762,12 +757,9 @@ function switchMobileTab(tab) {
     }
 }
 
-// Initialize mobile tab based on content
-function initMobileTab() {
-    const editor = document.getElementById('editor');
-    
-    // Always show editor tab on mobile (especially when creating new CV)
-    switchMobileTab('editor');
+// Initialize tabs
+function initTabs() {
+    switchTab('editor');
 }
 
 function requestInitialZoom() {

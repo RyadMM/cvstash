@@ -4,6 +4,12 @@ let touchStartY = 0;
 let touchStartTime = 0;
 let actionBarElement = null;
 
+// Panel swipe state
+let panelSwipeStartX = 0;
+let panelSwipeStartTime = 0;
+let panelWrapper = null;
+let panelSwitchFn = null;
+
 export function initSwipeGesture() {
     actionBarElement = document.getElementById('selection-action-bar');
 
@@ -50,4 +56,32 @@ export function destroySwipeGesture() {
         actionBarElement.removeEventListener('touchmove', handleTouchMove);
         actionBarElement.removeEventListener('touchend', handleTouchEnd);
     }
+}
+
+// Horizontal swipe for panel switching
+export function initPanelSwipe(switchTabFn) {
+    panelWrapper = document.getElementById('editor-preview-wrapper');
+    if (!panelWrapper) return;
+
+    panelSwitchFn = switchTabFn;
+
+    panelWrapper.addEventListener('touchstart', (e) => {
+        panelSwipeStartX = e.touches[0].clientX;
+        panelSwipeStartTime = Date.now();
+    }, { passive: true });
+
+    panelWrapper.addEventListener('touchend', (e) => {
+        const touch = e.changedTouches[0];
+        const deltaX = touch.clientX - panelSwipeStartX;
+        const deltaTime = Date.now() - panelSwipeStartTime;
+
+        // Swipe left/right: moved more than 80px in less than 400ms
+        if (Math.abs(deltaX) > 80 && deltaTime < 400) {
+            if (deltaX < 0) {
+                panelSwitchFn('preview');
+            } else {
+                panelSwitchFn('editor');
+            }
+        }
+    }, { passive: true });
 }
