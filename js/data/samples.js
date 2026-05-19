@@ -1,0 +1,486 @@
+// Sample CV data for the "Example" template option
+
+export const sampleCVs = {
+    en: [
+        // Sample 1: Bakery
+        `# Jane "Caramel" Donut
+
+Sugarville, Glazed Kingdom
++1 555-BE-TTER · jane.donut@bakerydreams.com
+
+## Summary
+
+Passionate and detail-oriented pastry enthusiast. Experience in sweet case management, recipe documentation, and hungry customer service. Autonomy, organizational skills, quality glaze verification, and adherence to baking procedures.
+
+## Key Skills
+
+- Rigor in temperatures, attention to detail, and chocolate consistency
+- Autonomy, utensil organization, and respect for proofing times
+- Order management, flour deliveries, and sweet priorities
+- Recipe documentation and clear baking instructions
+- Customer service (email / phone / in person / with samples)
+- Comfort with digital tools (connected scale, recipe apps)
+
+## Experience
+
+### Cupcake Solutions Coordinator — Sweet Dreams Bakery (Sugarville)
+*March 2024 — Present*
+
+- Handles client requests via email and phone with courteous and delicious service.
+- Ensures order follow-up, performs follow-up calls, and documents necessary icing information.
+- Verifies frosting designs and validates compliance with client requirements (colors, flavors, edible typography, etc.) before final delivery.
+- Plans seasonal themes and coordinates relevant pastry teams in advance.
+- Processes approximately **10 to 15 orders per day** and prioritizes based on freshness urgency and deadlines.
+
+### Pastry Chef — The Enchanted Bakery
+*September 2016 — January 2020*
+
+- Prepares stations and instruments according to cleanliness protocols and established procedures.
+- Anticipates unexpected issues (rush periods, last-minute orders) and adapts quickly to ensure smooth production progression.
+- Performs verifications and follow-ups related to recipes (temperatures, baking times) with scientific rigor.
+- Schedules tasting appointments, documents relevant information, and performs post-delivery follow-ups.
+
+### Pastry Apprentice — The Magic Oven
+*March 2008 — September 2016*
+
+- Prepares ingredients for daily recipes and assists during mass productions.
+- Sterilizes and maintains instruments and equipment according to hygiene standards.
+
+## Education
+
+- Technical Training — Advanced French Pastry (Cordon Bleu School), 2019
+- D.E.P. Pastry, 2008
+
+## Languages
+
+- French (native) · English (intermediate) · Language of Croissants (fluent)
+`,
+
+        // Sample 2: Space
+        `# Captain "Stardust" Nova
+
+Mars Colony Alpha, Sector 7
++1 555-SPA-CED · stardust@cosmicvoyages.net
+
+## Summary
+
+Bold explorer of the cosmic frontier with 5 years of experience in interplanetary logistics and zero-gravity hospitality. Passionate about making the galaxy feel smaller, one light-year at a time. Excellent at troubleshooting communication satellites while drinking zero-G coffee.
+
+## Key Skills
+
+- Zero-gravity customer service with a smile
+- Interstellar route optimization and fuel efficiency
+- Diplomatic relations with 47 different alien species
+- Crisis management during solar flare events
+- Fluency in 12 galactic languages including Binary and Morse
+- Advanced repair of quantum propulsion systems
+
+## Experience
+
+### Hospitality Officer — Galactic Cruises (Orbiting Earth)
+*June 2022 — Present*
+
+- Manage passenger comfort for 2,000+ travelers across the solar system
+- Coordinate with space station operations for smooth docking procedures
+- Handle emergency situations with calm and professionalism
+- Maintain 98% customer satisfaction rating in post-flight surveys
+
+### Cargo Logistics Specialist — Mars Supply Chain
+*January 2019 — May 2022*
+
+- Oversaw transportation of essential supplies from Earth to Mars colony
+- Reduced delivery time by 15% through optimized flight trajectories
+- Managed inventory of oxygen, food, and water supplies for 500+ colonists
+- Trained new recruits on zero-G cargo handling procedures
+
+## Education
+
+- Bachelor's in Interstellar Business — Mars University, 2018
+- Certified Space Traffic Controller — Galactic Federation, 2017
+
+## Languages
+
+- Earth English (native) · Martian Creole (conversational) · Robot-Speak (fluent)
+`,
+
+        // Sample 3: Gaming
+        `# Alex "Pixel" Chen
+
+Level 99, San Francisco
++1 555-GA-MING · alex@pixelstudios.io
+
+## Summary
+
+Full-stack game developer with 7 years of experience creating immersive gaming experiences. Passionate about pixel art, procedurally generated worlds, and writing code that doesn't break. Known for turning coffee into code and bugs into features.
+
+## Key Skills
+
+- Game development with Unity and Unreal Engine 5
+- Procedural generation and AI behavior trees
+- Multiplayer networking and server optimization
+- Pixel art and 2D animation
+- Community management and Discord moderation
+- Writing bug reports that sound like feature requests
+
+## Experience
+
+### Lead Game Developer — Indie Studio (Remote)
+*March 2021 — Present*
+
+- Led development of "Cosmic Harvest", a farming sim with 500K+ downloads
+- Managed team of 5 developers across 3 time zones
+- Implemented daily challenges and seasonal events
+- Respond to community feedback and balance game mechanics
+
+### Junior Developer — AAA Games Studio
+*June 2018 — February 2021*
+
+- Contributed to "Fantasy Quest XII", which sold 3 million copies
+- Worked on UI/UX design and inventory systems
+- Fixed memory leaks and optimized loading times by 40%
+
+## Education
+
+- B.S. Computer Science (Game Design) — UC Berkeley, 2018
+- Certificate in 3D Modeling — Art Institute, 2017
+
+## Languages
+
+- C++, C#, JavaScript, Python, SQL, Lua
+- English (native) · Japanese (basic) · Klingon (for roleplay events)
+`,
+
+        // Sample 4: Cat Cafe
+        `# Luna "Whiskers" Martinez
+
+Purrfect Cafe, Meow District
++1 555-CAT-SPA · luna@whiskersandbeans.com
+
+## Summary
+
+Dedicated cat cafe manager with 4 years of experience in feline hospitality and human-cat mediation. Expert at interpreting meow frequencies, tail positions, and purr volumes. Passionate about creating the perfect environment where cats can thrive and humans can receive unconditional love.
+
+## Key Skills
+
+- Feline behavior interpretation and translation
+- Cat nap optimization and comfort zone arrangement
+- Grooming techniques for 47 different breeds
+- Organic catnip sourcing and treat preparation
+- Laser pointer operation and toy maintenance
+- Human-to-cat diplomacy and conflict resolution
+
+## Experience
+
+### Head Cat Wrangler — Purrfect Cafe
+*June 2020 — Present*
+
+- Manage daily care of 18 resident cats and coordinate 30+ foster placements
+- Train new staff on proper cat handling and treat distribution protocols
+- Organize monthly adoption events that found homes for 200+ cats
+- Maintain 5-star rating on "CatTourist" review platform
+
+### Pet Sitter — Self-Employed
+*January 2018 — May 2020*
+
+- Provided in-home care for 50+ pets including cats, dogs, and one very confused hamster
+- Administered medications, maintained feeding schedules, and provided daily updates to owners
+- Built reputation for reliability through detailed photo updates and communication
+
+## Education
+
+- Certified Feline Training Specialist — Cat Academy Online, 2019
+- Workshop: "Understanding the Slow Blink" — Feline Psychology Institute, 2018
+
+## Languages
+
+- English (native) · Cat (fluent) · Dog (conversational)
+`,
+
+        // Sample 5: Detective
+        `# Sam "Clue" Hunter
+
+Noir City, Shadows District
++1 555-MYS-TERY · sam@sleuthagency.com
+
+## Summary
+
+Gritty private investigator with a knack for finding lost things and people who don't want to be found. 12 years of experience solving cases that range from missing heirlooms to uncovering corporate espionage. Always gets their person, eventually. Has a complicated relationship with doors.
+
+## Key Skills
+
+- Surveillance and stakeout operations (can wait 48 hours without bathroom break)
+- Interrogation and suspect interviewing
+- Forensic photography and evidence collection
+- Undercover disguise and voice modulation
+- Database searching and background investigation
+- Coffee brewing in a office setting
+
+## Experience
+
+### Private Investigator — Hunter Detective Agency
+*March 2016 — Present*
+
+- Solved 200+ cases including missing persons, corporate fraud, and finding lost keys
+- Built network of informants across the city
+- Maintained 85% case closure rate
+- Regularly consulted by local law enforcement on difficult cases
+
+### Police Detective — Noir City Police Department
+*January 2012 — February 2016*
+
+- Investigated homicides, robberies, and suspicious activities
+- Collaborated with district attorneys on case prosecution
+- Received commendation for bravery during stakeout operation
+
+## Education
+
+- Criminal Justice Certificate — City College, 2011
+- Private Investigator License — State Board, 2012
+
+## Languages
+
+- English (native) · Sarcasm (fluent) · Legalese (conversational)
+`
+    ],
+    fr: [
+        // French Sample 1: Boulangerie
+        `# Jean "Caramel" Dupont
+
+Sucrerie, Royaume Glacé
++1 555-BE-TTER · jean.dupont@boulangeriedevs.com
+
+## Résumé
+
+Boulanger passionné et attentif aux détails. Expérience en gestion de sucrerie, documentation de recettes, et service client gourmand. Autonomie, compétences organisationnelles, vérification de la qualité du glaçage, et respect des procédures de fabrication.
+
+## Compétences Clés
+
+- Rigueur dans les températures, souci du détail, et constance du chocolat
+- Autonomie, organisation des ustensiles, et respect des temps de pousse
+- Gestion des commandes, livraisons de farine, et priorités sucrées
+- Documentation de recettes et instructions de pâtisserie claires
+- Service client (email / téléphone / en personne / avec échantillons)
+- Confort avec les outils numériques (balance connectée, applications de recettes)
+
+## Expérience
+
+### Coordinateur Solutions Cupcakes — Boulangerie des Rêves (Sucrerie)
+*Mars 2024 — Présent*
+
+- Gère les demandes des clients par email et téléphone avec un service courtois et délicieux.
+- Assure le suivi des commandes, effectue des appels de suivi et documente les informations de glaçage nécessaires.
+- Vérifie les designs de glaçage et valide la conformité avec les exigences des clients.
+- Planifie des saisons thématiques et coordonne les équipes de pâtisserie pertinentes à l'avance.
+- Traite environ **10 à 15 commandes par jour** et priorise en fonction de l'urgence de fraîcheur.
+
+### Chef Pâtissier — La Boulangerie Enchantée
+*Septembre 2016 — Janvier 2020*
+
+- Prépare les stations et les instruments selon les protocoles de propreté et les procédures établies.
+- Anticipe les problèmes inattendus (périodes de pointe, commandes de dernière minute) et s'adapte rapidement pour assurer une progression fluide de la production.
+- Effectue des vérifications et des suivis liés aux recettes (températures, temps de cuisson) avec rigueur scientifique.
+- Planifie des rendez-vous de dégustation, documente les informations pertinentes et effectue des suivis après livraison.
+
+### Apprenti Pâtissier — Le Four Magique
+*Mars 2008 — Septembre 2016*
+
+- Prépare les ingrédients pour les recettes quotidiennes et assiste lors des productions de masse.
+- Stérilise et maintient les instruments et l'équipement conformément aux normes d'hygiène.
+
+## Formation
+
+- Formation Technique — Pâtisserie Française Avancée (École Cordon Bleu), 2019
+- D.E.P. Pâtisserie, 2008
+
+## Langues
+
+- Français (natif) · Anglais (intermédiaire) · Langue des Croissants (courant)
+`,
+
+        // French Sample 2: Espace
+        `# Capitaine "Stardust" Nova
+
+Colonie Mars Alpha, Secteur 7
++1 555-SPA-CED · stardust@voyagescosmiques.net
+
+## Résumé
+
+Explorateur audacieux de la frontière cosmique avec 5 ans d'expérience en logistique interplanétaire et hospitalité en apesanteur. Passionné par rendre la galaxie plus petite, une année-lumière à la fois. Excellent pour dépanner les satellites de communication tout en buvant du café en apesanteur.
+
+## Compétences Clés
+
+- Service client en apesanteur avec le sourire
+- Optimisation des trajectoires interstellaires et efficacité énergétique
+- Relations diplomatiques avec 47 espèces extraterrestres différentes
+- Gestion de crise pendant les éruptions solaires
+- Courance en 12 langues galactiques incluant le binaire et le morse
+- Réparation avancée des systèmes de propulsion quantique
+
+## Expérience
+
+### Officier d'Hospitalité — Croisières Galactiques (Orbite Terrestre)
+*Juin 2022 — Présent*
+
+- Gère le confort des passagers pour 2000+ voyageurs à travers le système solaire
+- Coordonne avec les opérations de la station spatiale pour des procédures d'amarrage fluides
+- Gère les situations d'urgence avec calme et professionnalisme
+- Maintient un taux de satisfaction client de 98% dans les sondages post-vol
+
+### Spécialiste Logistique Cargo — Chaîne d'Approvisionnement Mars
+*Janvier 2019 — Mai 2022*
+
+- A supervisé le transport de fournitures essentielles de la Terre vers la colonie martienne
+- Réduit le temps de livraison de 15% grâce à des trajectoires de vol optimisées
+- Géré l'inventaire en oxygène, nourriture et eau pour 500+ colons
+- Formé des nouveaux recrues sur les procédures de manutention de cargo en apesanteur
+
+## Formation
+
+- Licence en Commerce Interstellaire — Université de Mars, 2018
+- Contrôleur de Trafic Spatial Certifié — Fédération Galactique, 2017
+
+## Langues
+
+- Anglais Terrien (natif) — Créole Martien (conversationnel) — Robot-Speak (courant)
+`,
+
+        // French Sample 3: Gaming
+        `# Alex "Pixel" Chen
+
+Niveau 99, San Francisco
++1 555-GA-MING · alex@pixelstudios.io
+
+## Résumé
+
+Développeur de jeux full-stack avec 7 ans d'expérience créant des expériences de jeu immersives. Passionné par le pixel art, les mondes générés procéduralement, et l'écriture de code qui ne plante pas. Réputé pour transformer le café en code et les bugs en fonctionnalités.
+
+## Compétences Clés
+
+- Développement de jeux avec Unity et Unreal Engine 5
+- Génération procédurale et arbres de comportement IA
+- Mise en réseau multijoueur et optimisation de serveur
+- Pixel art et animation 2D
+- Gestion de communauté et modération Discord
+- Rédaction de rapports de bugs qui sonnent comme des demandes de fonctionnalités
+
+## Expérience
+
+### Développeur de Jeux Principal — Studio Indie (Télétravail)
+*Mars 2021 — Présent*
+
+- Dirigé le développement de "Cosmic Harvest", un simulateur de ferme avec 500K+ téléchargements
+- Géré une équipe de 5 développeurs sur 3 fuseaux horaires
+- Implémenté des défis quotidiens et des événements saisonniers
+- Répondu aux retours de la communauté et équilibré les mécaniques de jeu
+
+### Développeur Junior — Studio AAA Games
+*Juin 2018 — Février 2021*
+
+- Contribué à "Fantasy Quest XII", qui s'est vendu à 3 millions d'exemplaires
+- Travail sur l'interface utilisateur et les systèmes d'inventaire
+- Corrigé les fuites de mémoire et optimisé les temps de chargement de 40%
+
+## Formation
+
+- Licence en Informatique (Design de Jeux) — UC Berkeley, 2018
+- Certificat en Modélisation 3D — Institut d'Art, 2017
+
+## Langues
+
+- C++, C#, JavaScript, Python, SQL, Lua
+- Anglais (natif) — Japonais (bases) — Klingon (pour les événements de jeu de rôle)
+`,
+
+        // French Sample 4: Café Chats
+        `# Luna "Mustache" Martinez
+
+Café Parfait, Quartier des Miaulements
++1 555-CAT-SPA · luna@mustachesetbiscottes.com
+
+## Résumé
+
+Gérant de café à chats dévoué avec 4 ans d'expérience en hospitalité féline et médiation humain-chat. Expert en interprétation des fréquences de miaulement, des positions de queue, et des volumes de ronronnement. Passionné par créer l'environnement parfait où les chats peuvent s'épanouir et les humains peuvent recevoir de l'amour inconditionnel.
+
+## Compétences Clés
+
+- Interprétation du comportement félin et traduction
+- Optimisation des siestes et arrangement des zones de confort
+- Techniques de toilettage pour 47 races différentes
+- Approvisionnement en herbe à chat et préparation de friandises
+- Manipulation de pointeur laser et maintenance de jouets
+- Diplomatie humain-chat et résolution de conflits
+
+## Expérience
+
+### Responsable de Zone des Chats — Café Parfait
+*Juin 2020 — Présent*
+
+- Gère les soins quotidiens de 18 chats résidents et coordonne 30+ placements en famille d'accueil
+- Forme le nouveau personnel sur la manipulation appropriée des chats et les protocoles de distribution de friandises
+- Organise des événements d'adoption mensuels qui ont trouvé des maisons pour 200+ chats
+- Maintient une note de 5 étoiles sur la plateforme d'avis "ChatTouriste"
+
+### Gardien d'animaux — Indépendant
+*Janvier 2018 — Mai 2020*
+
+- A fourni des soins à domicile pour 50+ animaux incluant chats, chiens, et un hamster très confus
+- Administré des médicaments, maintenu des programmes d'alimentation, et fourni des mises à jour quotidiennes aux propriétaires
+- Construit une réputation de fiabilité grâce à des mises à jour photo détaillées et une communication constante
+
+## Formation
+
+- Spécialiste en Dressage Félin Certifié — Académie des Chats en Ligne, 2019
+- Atelier: "Comprendre le Clignement Lent" — Institut de Psychologie Féline, 2018
+
+## Langues
+
+- Anglais (natif) — Chat (courant) — Chien (conversationnel)
+`,
+
+        // French Sample 5: Détective
+        `# Sam "Indice" Hunter
+
+Ville Noire, Quartier des Ombres
++1 555-MYS-TERY · sam@agencededetection.com
+
+## Résumé
+
+Enquêteur privé tenace avec un don pour trouver les choses perdues et les personnes qui ne veulent pas être trouvées. 12 ans d'expérience à résoudre des cas allant des héritages perdus à l'espionnage industrielle. Trouve toujours la personne, éventuellement. Relation compliquée avec les portes.
+
+## Compétences Clés
+
+- Surveillance et opérations de filature (peut attendre 48 heures sans pause toilette)
+- Interrogatoire et entrevue de suspects
+- Photographie médico-légale et collecte de preuves
+- Déguisement et modulation vocale
+- Recherche dans les bases de données et investigation d'antécédents
+- Préparation de café dans un environnement de bureau
+
+## Expérience
+
+### Enquêteur Privé — Agence de Détection Hunter
+*Mars 2016 — Présent*
+
+- Résolu 200+ cas incluant des personnes disparues, fraudes corporatives, et clés perdues
+- Construit un réseau d'informateurs à travers la ville
+- Maintenu un taux de résolution de 85% des cas
+- Régulièrement consulté par les forces de l'ordre locales sur les affaires difficiles
+
+### Détective de Police — Département de Police de Ville Noire
+*Janvier 2012 — Février 2016*
+
+- Enquêté sur des homicides, vols, et activités suspectes
+- Collaboré avec les procureurs sur la poursuite des cas
+- Reçu une mention pour bravoure pendant une opération de filature
+
+## Formation
+
+- Certificat en Justice Criminelle — Collège de la Ville, 2011
+- Licence d'Enquêteur Privé — Conseil d'État, 2012
+
+## Langues
+
+- Anglais (natif) — Sarcaste (courant) — Juridique (conversationnel)
+`
+    ]
+};
