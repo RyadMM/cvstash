@@ -1,35 +1,67 @@
 import { t } from './i18n.js';
 
 const CHAR_LIMIT = 2500;
-const SPACING_LEVELS = {
-    COMPACT: 'spacing-compact',
-    MEDIUM: 'spacing-medium',
-    FULL: 'spacing-full'
-};
+const MIN_SCALE = 0.75;
+const MAX_SCALE = 1.3;
+
+let scaleMode = 'auto';
 
 export function updatePreview(content) {
     const preview = document.getElementById('preview');
     preview.innerHTML = marked.parse(content);
-    applySpacingLevel(content);
+    autoFitContent();
     updateCharacterCounter(content);
 }
 
-function applySpacingLevel(content) {
-    const charCount = content.length;
-    const preview = document.getElementById('preview');
+export function setScaleMode(mode) {
+    scaleMode = mode;
 
-    preview.classList.remove(...Object.values(SPACING_LEVELS));
+    const template = document.getElementById('preview');
+    if (!template) return;
 
-    let spacingLevel;
-    if (charCount >= 2500) {
-        spacingLevel = SPACING_LEVELS.COMPACT;
-    } else if (charCount >= 1750) {
-        spacingLevel = SPACING_LEVELS.MEDIUM;
+    if (mode === 'auto') {
+        autoFitContent();
     } else {
-        spacingLevel = SPACING_LEVELS.FULL;
+        template.style.setProperty('--s', mode);
+    }
+}
+
+export function autoFitContent() {
+    const template = document.getElementById('preview');
+    if (!template) return;
+
+    if (scaleMode !== 'auto') {
+        template.style.setProperty('--s', scaleMode);
+        return;
     }
 
-    preview.classList.add(spacingLevel);
+    const style = getComputedStyle(template);
+    const paddingTop = parseFloat(style.paddingTop);
+    const paddingBottom = parseFloat(style.paddingBottom);
+    const availableHeight = template.clientHeight - paddingTop - paddingBottom;
+
+    // Reset scale to measure natural content size
+    template.style.setProperty('--s', '1');
+
+    // Temporarily remove height constraint for measurement
+    const savedHeight = template.style.height;
+    const savedOverflow = template.style.overflow;
+    template.style.height = 'auto';
+    template.style.overflow = 'visible';
+
+    // scrollHeight includes padding, so subtract to get content-only height
+    const naturalContentHeight = template.scrollHeight - paddingTop - paddingBottom;
+
+    // Restore height constraints
+    template.style.height = savedHeight;
+    template.style.overflow = savedOverflow;
+
+    if (naturalContentHeight < 1) return;
+
+    const ratio = (availableHeight * 0.95) / naturalContentHeight;
+    const scale = Math.min(Math.max(ratio, MIN_SCALE), MAX_SCALE);
+
+    template.style.setProperty('--s', scale.toString());
 }
 
 function updateCharacterCounter(content) {

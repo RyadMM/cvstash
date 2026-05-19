@@ -2,58 +2,69 @@
 
 import { t } from './i18n.js';
 import { generatePDFFilename } from './storage.js';
+import { autoFitContent } from './preview.js';
 
-function createPDFElement(content) {
-    const element = document.createElement('div');
-    element.className = 'cv-template';
-    element.style.position = 'absolute';
-    element.style.left = '0';
-    element.style.top = '0';
-    element.style.zIndex = '-1';
-    element.style.width = '8.5in';
-    element.style.minHeight = 'auto';
-    element.style.transform = 'none';
-    element.style.padding = '0.4in';
-    element.style.paddingBottom = '0.3in';
-    element.innerHTML = marked.parse(content);
-    return element;
+const LETTER_HEIGHT_PX = 11 * 96; // letter page height in CSS pixels
+
+const PDF_CONFIG_BASE = {
+    margin: 0,
+    image: { type: 'jpeg', quality: 0.95 },
+    html2canvas: {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        letterRendering: true,
+        ignoreElements: (element) => {
+            return element.id === 'loading' || element.id === 'progress-overlay';
+        }
+    },
+    jsPDF: {
+        unit: 'in',
+        format: 'letter',
+        orientation: 'portrait'
+    }
+};
+
+function preparePreviewForPDF(preview) {
+    const saved = {
+        transform: preview.style.transform,
+        transformOrigin: preview.style.transformOrigin,
+        width: preview.style.width,
+        maxHeight: preview.style.maxHeight,
+        overflow: preview.style.overflow,
+    };
+
+    preview.style.transform = 'none';
+    preview.style.transformOrigin = '';
+    preview.style.width = '8.5in';
+
+    return saved;
+}
+
+function restorePreview(preview, saved) {
+    preview.style.transform = saved.transform;
+    preview.style.transformOrigin = saved.transformOrigin;
+    preview.style.width = saved.width;
+    preview.style.maxHeight = saved.maxHeight;
+    preview.style.overflow = saved.overflow;
 }
 
 export function downloadPDF(cv) {
     const filename = generatePDFFilename(cv.name);
+    const preview = document.getElementById('preview');
     const loading = document.getElementById('loading');
     const btn = document.getElementById('download-btn');
 
-    // Use requestAnimationFrame to ensure UI updates immediately
+    const saved = preparePreviewForPDF(preview);
+
     requestAnimationFrame(() => {
         loading.classList.add('show');
         if (btn) btn.classList.add('loading');
 
-        // Small timeout to ensure loading overlay is visible before heavy work
         setTimeout(() => {
-            const pdfElement = createPDFElement(cv.content);
-            document.body.appendChild(pdfElement);
-
-            const config = {
-                margin: 0,
-                filename: filename,
-                image: { type: 'jpeg', quality: 0.95 },
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    logging: false,
-                    letterRendering: true
-                },
-                jsPDF: {
-                    unit: 'in',
-                    format: 'letter',
-                    orientation: 'portrait'
-                }
-            };
-
             html2pdf()
-                .set(config)
-                .from(pdfElement)
+                .set({ ...PDF_CONFIG_BASE, filename })
+                .from(preview)
                 .save()
                 .then(() => {
                     loading.classList.remove('show');
@@ -65,9 +76,7 @@ export function downloadPDF(cv) {
                 })
                 .finally(() => {
                     if (btn) btn.classList.remove('loading');
-                    if (document.body.contains(pdfElement)) {
-                        document.body.removeChild(pdfElement);
-                    }
+                    restorePreview(preview, saved);
                 });
         }, 50);
     });
@@ -75,32 +84,44 @@ export function downloadPDF(cv) {
 
 export async function generatePDFForCV(cv) {
     return new Promise((resolve, reject) => {
-        const pdfElement = createPDFElement(cv.content);
-        document.body.appendChild(pdfElement);
-
+        const preview = document.getElementById('preview');
+        const previewPanel = document.getElementById('preview-panel');
         const filename = generatePDFFilename(cv.name);
 
-        html2pdf().set({
-            margin: 0,
-            filename: filename,
-            image: { type: 'jpeg', quality: 0.95 },
-            html2canvas: {
-                scale: 2,
-                useCORS: true,
-                logging: false,
-                letterRendering: true
-            },
-            jsPDF: {
-                unit: 'in',
-                format: 'letter',
-                orientation: 'portrait'
-            }
-        }).from(pdfElement).save().then(() => {
-            document.body.removeChild(pdfElement);
-            resolve();
-        }).catch(err => {
-            document.body.removeChild(pdfElement);
-            reject(err);
+        const savedHTML = preview.innerHTML;
+        const panelWasHidden = !previewPanel.classList.contains('active');
+
+        if (panelWasHidden) {
+            previewPanel.style.display = 'flex';
+        }
+
+        preview.innerHTML = marked.parse(cv.content);
+        autoFitContent();
+        const saved = preparePreviewForPDF(preview);
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                html2pdf()
+                    .set({ ...PDF_CONFIG_BASE, filename })
+                    .from(preview)
+                    .save()
+                    .then(() => {
+                        cleanup();
+                        resolve();
+                    })
+                    .catch(err => {
+                        cleanup();
+                        reject(err);
+                    });
+            });
         });
+
+        function cleanup() {
+            restorePreview(preview, saved);
+            preview.innerHTML = savedHTML;
+            if (panelWasHidden) {
+                previewPanel.style.display = '';
+            }
+        }
     });
 }
