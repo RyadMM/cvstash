@@ -1,6 +1,7 @@
 import { t } from './i18n.js';
+import { CHAR_LIMIT } from './constants.js';
+import { sanitizeHtml } from './sanitize.js';
 
-const CHAR_LIMIT = 2500;
 const MIN_SCALE = 0.75;
 const MAX_SCALE = 1.3;
 
@@ -8,7 +9,7 @@ let scaleMode = 'auto';
 
 export function updatePreview(content) {
     const preview = document.getElementById('preview');
-    preview.innerHTML = marked.parse(content);
+    preview.innerHTML = sanitizeHtml(marked.parse(content));
     autoFitContent();
     updateCharacterCounter(content);
 }

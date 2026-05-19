@@ -5,7 +5,12 @@ export function loadCVs() {
     let cvs = {};
 
     if (savedCVs) {
-        cvs = JSON.parse(savedCVs);
+        try {
+            cvs = JSON.parse(savedCVs);
+        } catch (e) {
+            console.error('Failed to parse saved CVs, resetting:', e);
+            cvs = {};
+        }
     } else {
         const legacyContent = localStorage.getItem('cv-content');
         if (legacyContent) {

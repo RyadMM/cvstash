@@ -54,20 +54,15 @@ function buildStepHTML(step) {
 
 function buildMarkdownTable() {
     const rows = [
-        ['<code># Heading</code>', t('mdHeading')],
-        ['<code>## Section</code>', t('mdSection')],
-        ['<code>**bold**</code>', t('mdBold')],
-        ['<code>*italic*</code>', t('mdItalic')],
-        ['<code>- item</code>', t('mdBullet')],
-        ['<code>[text](url)</code>', t('mdLink')],
+        ['# Heading', t('mdHeading')],
+        ['## Section', t('mdSection')],
+        ['**bold**', t('mdBold')],
+        ['*italic*', t('mdItalic')],
+        ['- item', t('mdBullet')],
+        ['[link](url)', t('mdLink')],
     ];
     return `<table class="markdown-ref-table">
-        <tr><td><code># Heading</code></td><td>${t('mdHeading')}</td></tr>
-        <tr><td><code>## Section</code></td><td>${t('mdSection')}</td></tr>
-        <tr><td><code>**bold**</code></td><td>${t('mdBold')}</td></tr>
-        <tr><td><code>*italic*</code></td><td>${t('mdItalic')}</td></tr>
-        <tr><td><code>- item</code></td><td>${t('mdBullet')}</td></tr>
-        <tr><td><code>[link](url)</code></td><td>${t('mdLink')}</td></tr>
+        ${rows.map(([syntax, desc]) => `<tr><td><code>${syntax}</code></td><td>${desc}</td></tr>`).join('\n')}
     </table>`;
 }
 

@@ -2,6 +2,7 @@
 
 import { t } from './i18n.js';
 import * as storage from './storage.js';
+import { BREAKPOINT_MOBILE } from './constants.js';
 
 export function escapeHtml(text) {
     const div = document.createElement('div');
@@ -149,7 +150,7 @@ export function shouldSkipDeleteConfirm() {
 }
 
 export function toggleSidebar() {
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= BREAKPOINT_MOBILE) {
         toggleMobileMenu();
         return;
     }

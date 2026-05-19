@@ -1,6 +1,7 @@
 // Command classes for undo/redo functionality
 
 import { t } from './i18n.js';
+import { saveCVs } from './storage.js';
 
 // Base Command interface (for reference)
 // interface Command {
@@ -43,7 +44,7 @@ export class DeleteCommand {
 
         // Restore currentCVId if it was changed
         if (this.newCurrentCVId) {
-            localStorage.setItem('currentCVId', this.cvId);
+            saveCVs(this.cvs, this.cvId);
         }
     }
 
@@ -91,7 +92,7 @@ export class BatchDeleteCommand {
 
         // Restore currentCVId if it was changed
         if (this.newCurrentCVId) {
-            localStorage.setItem('currentCVId', this.currentCVId);
+            saveCVs(this.cvs, this.currentCVId);
         }
     }
 

@@ -1,13 +1,13 @@
 // Theme management - native color picker with palette icon
 
-let currentColor = null;
+import { DEFAULT_ACCENT } from './constants.js';
 
 // Get color for a specific CV (fallback to global theme)
 export function getCVColor(cv) {
     if (cv && cv.color) {
         return cv.color;
     }
-    return localStorage.getItem('accentColor') || '#f97316';
+    return localStorage.getItem('accentColor') || DEFAULT_ACCENT;
 }
 
 // Apply a CV's color to the theme
@@ -28,7 +28,7 @@ export function setCVColor(cvId, hexColor, cvs) {
 
 // Get current global accent color
 export function getGlobalAccentColor() {
-    return localStorage.getItem('accentColor') || '#f97316';
+    return localStorage.getItem('accentColor') || DEFAULT_ACCENT;
 }
 
 export function initTheme() {
@@ -36,7 +36,7 @@ export function initTheme() {
     const colorInput = document.getElementById('accent-color-input');
     if (!colorBtn || !colorInput) return;
 
-    const savedColor = localStorage.getItem('accentColor') || '#f97316';
+    const savedColor = localStorage.getItem('accentColor') || DEFAULT_ACCENT;
     colorInput.value = savedColor;
     applyTheme(savedColor);
 
@@ -63,5 +63,5 @@ function updateColorPickerUI(color) {
 }
 
 export function getCurrentTheme() {
-    return document.documentElement.style.getPropertyValue('--accent-color') || '#f97316';
+    return document.documentElement.style.getPropertyValue('--accent-color') || DEFAULT_ACCENT;
 }

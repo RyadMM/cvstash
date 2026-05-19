@@ -14,6 +14,7 @@ import { initTheme, setTheme, applyCVColor } from './theme.js';
 import { executeCommand, undo, redo } from './history.js';
 import { RenameCommand, EditCommand } from './commands.js';
 import { showToast } from './toast.js';
+import { BREAKPOINT_MOBILE, CHAR_LIMIT, EDIT_TRACK_DEBOUNCE_MS, LETTER_WIDTH_PX } from './constants.js';
 
 let renamingCVId = null;
 let zoomLevel = 1.0;
@@ -775,7 +776,7 @@ function switchTab(tab) {
         }
 
         // On mobile, apply letter-fit scaling after preview renders
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= BREAKPOINT_MOBILE) {
             requestAnimationFrame(() => applyFitToView());
         }
     }
@@ -878,7 +879,7 @@ function handleEditorInput(content) {
         // Update tracking state
         lastEditCVId = currentCVId;
         lastEditContent = content;
-    }, 2000);
+    }, EDIT_TRACK_DEBOUNCE_MS);
 }
 
 function handleLanguageChange(lang) {
@@ -897,7 +898,7 @@ function handleDownloadPDF() {
     const cv = sidebar.getCurrentCV();
     if (!cv) return;
 
-    if (cv.content.length > 2500) {
+    if (cv.content.length > CHAR_LIMIT) {
         alert(t('charLimitExceeded'));
         return;
     }
@@ -928,7 +929,7 @@ function getCurrentZoomScale() {
     if (!preview) return 1.0;
 
     // On mobile, zoom is handled via CSS zoom property
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= BREAKPOINT_MOBILE) {
         return parseFloat(preview.style.zoom) || 1.0;
     }
 
@@ -951,7 +952,7 @@ function setZoomScale(scale) {
 
     scale = Math.floor(scale * 100) / 100;
 
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= BREAKPOINT_MOBILE) {
         preview.style.zoom = scale;
     } else {
         preview.style.transform = `scale(${scale})`;
@@ -963,9 +964,9 @@ function applyFitToView() {
 
     if (!preview) return;
 
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= BREAKPOINT_MOBILE) {
         // On mobile, use CSS zoom to fit letter page to viewport width
-        const templateWidthPx = 816; // 8.5in at 96dpi
+        const templateWidthPx = LETTER_WIDTH_PX;
         const scale = Math.floor((window.innerWidth / templateWidthPx) * 100) / 100;
         preview.style.zoom = scale;
         preview.style.transform = '';
@@ -1150,7 +1151,6 @@ function handleRename(id) {
     renamingCVId = id;
     showRenameModal(oldName, (newName) => {
         const command = new RenameCommand(id, oldName, newName, cvs);
-        command.execute();
         executeCommand(command);
 
         const updatedCVs = sidebar.getCVs();

@@ -147,9 +147,8 @@ export async function batchDownloadPDF(cvs) {
 export function batchDelete(cvs) {
     const selectedIds = Array.from(selectedCVs);
 
-    const currentCVId = localStorage.getItem('currentCVId');
+    const currentCVId = sidebar.getCurrentCVId();
     const command = new BatchDeleteCommand(selectedIds, cvs, currentCVId);
-    command.execute();
     executeCommand(command);
 
     // Show toast with undo option

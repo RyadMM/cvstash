@@ -1,6 +1,7 @@
 // Editor functionality
 
 import { t } from './i18n.js';
+import { EDITOR_DEBOUNCE_MS } from './constants.js';
 
 let debounceTimer = null;
 
@@ -20,7 +21,7 @@ function handleInput(onInput) {
     debounceTimer = setTimeout(() => {
         onInput(content);
         document.getElementById('app-subtitle').textContent = t('saved');
-    }, 300);
+    }, EDITOR_DEBOUNCE_MS);
 }
 
 export function loadContent(content) {

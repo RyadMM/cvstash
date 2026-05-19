@@ -3,8 +3,7 @@
 import { t } from './i18n.js';
 import { generatePDFFilename } from './storage.js';
 import { autoFitContent } from './preview.js';
-
-const LETTER_HEIGHT_PX = 11 * 96; // letter page height in CSS pixels
+import { sanitizeHtml } from './sanitize.js';
 
 const PDF_CONFIG_BASE = {
     margin: 0,
@@ -102,7 +101,7 @@ export async function generatePDFForCV(cv) {
             previewPanel.style.display = 'flex';
         }
 
-        preview.innerHTML = marked.parse(cv.content);
+        preview.innerHTML = sanitizeHtml(marked.parse(cv.content));
         autoFitContent();
         const saved = preparePreviewForPDF(preview);
 

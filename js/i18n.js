@@ -1,13 +1,20 @@
 // Internationalization (i18n) module
 
 import { refreshIcons } from './icons.js';
+import { CHAR_LIMIT } from './constants.js';
 
 let i18nData = {};
 let currentLang = 'en';
 
 export async function loadI18n() {
-    const response = await fetch('locales/' + currentLang + '.json');
-    i18nData = await response.json();
+    try {
+        const response = await fetch('locales/' + currentLang + '.json');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        i18nData = await response.json();
+    } catch (e) {
+        console.error('Failed to load locale, using keys as fallback:', e);
+        i18nData = {};
+    }
     return i18nData;
 }
 
@@ -93,7 +100,7 @@ export function updateLanguageUI() {
 
     const charLimit = document.getElementById('char-limit');
     if (charLimit) {
-        charLimit.textContent = '2500';
+        charLimit.textContent = CHAR_LIMIT.toString();
     }
 }
 
