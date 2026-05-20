@@ -265,6 +265,8 @@
         display: flex;
         justify-content: center;
         -webkit-overflow-scrolling: touch;
+        flex: 1;
+        min-height: 100%;
     }
 
     .pagebreak-toggle-wrapper {
