@@ -63,6 +63,11 @@ async function init() {
     initOnboarding();
     requestInitialZoom();
 
+    // Register service worker for offline support
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+
     console.log('CV Stash initialized successfully');
 }
 
