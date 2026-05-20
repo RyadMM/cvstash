@@ -1,7 +1,6 @@
 // Internationalization (i18n) module
 
 import { refreshIcons } from './icons.js';
-import { CHAR_LIMIT } from './constants.js';
 
 let i18nData = {};
 let currentLang = 'en';
@@ -110,11 +109,6 @@ export function updateLanguageUI() {
     document.getElementById('template-placeholder-desc').textContent = t.placeholderDesc;
     document.getElementById('template-example-label').textContent = t.exampleLabel;
     document.getElementById('template-example-desc').textContent = t.exampleDesc;
-
-    const charLimit = document.getElementById('char-limit');
-    if (charLimit) {
-        charLimit.textContent = CHAR_LIMIT.toString();
-    }
 }
 
 export function updateLanguageButtons() {

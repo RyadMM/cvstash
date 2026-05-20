@@ -3,7 +3,7 @@
 import * as storage from './storage.js';
 import { loadI18n, setLang, updateLanguageUI, updateLanguageButtons, t, getLang } from './i18n.js';
 import { initEditor, loadContent, getContent } from './editor.js';
-import { updatePreview, checkContentLength, setScaleMode } from './preview.js';
+import { updatePreview, setScaleMode } from './preview.js';
 import { downloadPDF } from './pdf.js';
 import { initOnboarding, showHelpModal, showWizard } from './onboarding.js';
 import { escapeHtml, showRenameModal, closeMobileMenu, toggleMobileMenu, toggleSidebar as uiToggleSidebar, initSidebar as uiInitSidebar, showBatchDeleteModal, hideBatchDeleteModal, showProgressOverlay, hideProgressOverlay, updateProgress, getDeleteCallback } from './ui.js';
@@ -14,7 +14,7 @@ import { initTheme, setTheme, applyCVColor } from './theme.js';
 import { executeCommand, undo, redo } from './history.js';
 import { RenameCommand, EditCommand } from './commands.js';
 import { showToast } from './toast.js';
-import { BREAKPOINT_MOBILE, CHAR_LIMIT, EDIT_TRACK_DEBOUNCE_MS, LETTER_WIDTH_PX } from './constants.js';
+import { BREAKPOINT_MOBILE, EDIT_TRACK_DEBOUNCE_MS, LETTER_WIDTH_PX } from './constants.js';
 import { getNextSampleCV, getBlankCV, getPlaceholderCV, showTemplatePicker, hideTemplatePicker } from './templates.js';
 
 let renamingCVId = null;
@@ -274,7 +274,6 @@ function handleEditorInput(content) {
     const currentCV = sidebar.getCurrentCV();
     if (!currentCV) {
         updatePreview(content);
-        checkContentLength();
         return;
     }
 
@@ -295,7 +294,6 @@ function handleEditorInput(content) {
     const cvs = sidebar.getCVs();
 
     updatePreview(content);
-    checkContentLength();
 
     // Debounced edit command for undo (2 second delay)
     editTimeout = setTimeout(() => {
@@ -327,11 +325,6 @@ async function handleLanguageChange(lang) {
 function handleDownloadPDF() {
     const cv = sidebar.getCurrentCV();
     if (!cv) return;
-
-    if (cv.content.length > CHAR_LIMIT) {
-        alert(t('charLimitExceeded'));
-        return;
-    }
 
     downloadPDF(cv);
 }
@@ -598,7 +591,6 @@ function loadCurrentCV() {
 
     loadContent(cv.content);
     updatePreview(cv.content);
-    checkContentLength();
     updateActiveCVHighlight();
     applyFitToView();
 }

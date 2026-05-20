@@ -988,35 +988,6 @@ body {
     line-height: 1.4;
 }
 
-/* Character Counter */
-.char-counter {
-    display: flex;
-    align-items: center;
-    padding: 6px 12px;
-    background: #f3f4f6;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 500;
-    color: #6b7280;
-    gap: 2px;
-    white-space: nowrap;
-}
-
-.char-separator {
-    color: #d1d5db;
-    margin: 0 2px;
-}
-
-.char-counter.limit-exceeded {
-    background: #fef2f2;
-    color: #dc2626;
-}
-
-.char-counter.limit-exceeded .char-current {
-    color: #dc2626;
-    font-weight: 600;
-}
-
 /* Zoom Controls */
 .scale-control {
     padding: 0;

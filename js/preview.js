@@ -1,5 +1,3 @@
-import { t } from './i18n.js';
-import { CHAR_LIMIT } from './constants.js';
 import { sanitizeHtml } from './sanitize.js';
 
 const MIN_SCALE = 0.75;
@@ -11,7 +9,6 @@ export function updatePreview(content) {
     const preview = document.getElementById('preview');
     preview.innerHTML = sanitizeHtml(marked.parse(content));
     autoFitContent();
-    updateCharacterCounter(content);
 }
 
 export function setScaleMode(mode) {
@@ -63,36 +60,4 @@ export function autoFitContent() {
     const scale = Math.min(Math.max(ratio, MIN_SCALE), MAX_SCALE);
 
     template.style.setProperty('--s', scale.toString());
-}
-
-function updateCharacterCounter(content) {
-    const currentCount = content.length;
-    const counter = document.getElementById('char-counter');
-    const currentEl = document.getElementById('char-current');
-
-    if (!counter || !currentEl) return;
-
-    currentEl.textContent = currentCount;
-
-    if (currentCount > CHAR_LIMIT) {
-        counter.classList.add('limit-exceeded');
-    } else {
-        counter.classList.remove('limit-exceeded');
-    }
-}
-
-export function checkContentLength() {
-    const editorContent = document.getElementById('editor').value;
-    const currentCount = editorContent.length;
-
-    const downloadBtn = document.getElementById('download-btn');
-    if (currentCount > CHAR_LIMIT) {
-        downloadBtn.disabled = true;
-        downloadBtn.classList.add('disabled');
-    } else {
-        downloadBtn.disabled = false;
-        downloadBtn.classList.remove('disabled');
-    }
-
-    updateCharacterCounter(editorContent);
 }

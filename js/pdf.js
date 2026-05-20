@@ -5,6 +5,8 @@ import { generatePDFFilename } from './storage.js';
 import { autoFitContent } from './preview.js';
 import { sanitizeHtml } from './sanitize.js';
 
+const PDF_TIMEOUT_MS = 30000;
+
 const PDF_CONFIG_BASE = {
     margin: 0,
     image: { type: 'jpeg', quality: 0.95 },
@@ -67,18 +69,33 @@ export function downloadPDF(cv) {
         loading.classList.add('show');
         if (btn) btn.classList.add('loading');
 
+        let finished = false;
+        const timeout = setTimeout(() => {
+            if (finished) return;
+            finished = true;
+            loading.classList.remove('show');
+            if (btn) btn.classList.remove('loading');
+            restorePreview(preview, saved);
+            alert(t('pdfTimeout') || 'PDF generation timed out. Please try again.');
+        }, PDF_TIMEOUT_MS);
+
         setTimeout(() => {
             html2pdf()
                 .set({ ...PDF_CONFIG_BASE, filename })
                 .from(preview)
                 .save()
                 .then(() => {
+                    if (finished) return;
+                    finished = true;
+                    clearTimeout(timeout);
                     loading.classList.remove('show');
                 })
                 .catch(err => {
-                    console.error('PDF generation error:', err);
+                    if (finished) return;
+                    finished = true;
+                    clearTimeout(timeout);
                     loading.classList.remove('show');
-                    alert(t('loading') + ' Error: ' + err.message);
+                    alert(t('pdfError') + ' ' + err.message);
                 })
                 .finally(() => {
                     if (btn) btn.classList.remove('loading');
