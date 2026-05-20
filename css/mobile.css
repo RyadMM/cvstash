@@ -20,9 +20,13 @@
     }
 
     .header-privacy,
-    .theme-picker,
     .lang-switcher {
         display: none !important;
+    }
+
+    .layout-header-row {
+        justify-content: flex-start;
+        gap: 12px;
     }
 
     .header-content {
@@ -285,7 +289,6 @@
         width: 56px;
         height: 56px;
         margin-bottom: 16px;
-        color: #f97316;
     }
 
     .empty-state-title {
