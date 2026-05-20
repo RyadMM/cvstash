@@ -8,6 +8,7 @@ const PRECACHE_ASSETS = [
     '/index.html',
 
     // CSS
+    '/css/fonts.css',
     '/css/main.css',
     '/css/mobile.css',
     '/css/template.css',
@@ -38,6 +39,9 @@ const PRECACHE_ASSETS = [
     '/vendor/lucide.min.js',
     '/vendor/marked.min.js',
     '/vendor/html2pdf.bundle.min.js',
+
+    // Fonts
+    '/fonts/inter.woff2',
 
     // Locales
     '/locales/en.json',
