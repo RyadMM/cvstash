@@ -5,9 +5,6 @@ node_modules/
 dist/
 build/
 
-# Images (if not meant to be tracked)
-images/
-
 # Environment files
 .env
 .env.local
